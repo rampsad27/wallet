@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet_xuno/constants/appColour.dart';
 import 'package:wallet_xuno/screens/sideBar.dart';
@@ -22,8 +23,6 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // double screenWidth = MediaQuery.of(context).size.width;
-    // double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 246, 230),
       appBar: PreferredSize(
@@ -34,8 +33,7 @@ class _WalletScreenState extends State<WalletScreen> {
             bottomRight: Radius.circular(20),
           ),
           child: AppBar(
-            shadowColor: const Color.fromARGB(255, 0, 0, 0),
-            // elevation: 5,
+            // elevation: 8,
             backgroundColor: Colors.white,
             actions: [
               const SizedBox(width: 50),
@@ -74,23 +72,30 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
         ),
       ),
-      body: Row(
-        children: [
-          if (isDesktop(context))
-            const Center(
-                child: SizedBox(height: 566, width: 300, child: SideBar())),
-          Expanded(
-            child: Container(
-              color: Colors.yellow,
-              height: 673,
-              width: 1480,
-              padding: const EdgeInsets.fromLTRB(120, 0, 120, 0),
-              child: const Center(
-                child: TabbedScreen(),
+      drawer: isMobile(context) ? const Drawer(child: SideBar()) : null,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Center(
+            child: SizedBox(
+              // color: const Color.fromARGB(255, 192, 82, 188),
+              height: 773.h,
+              width: 1780.w,
+              child: Row(
+                children: [
+                  if (isDesktop(context))
+                    SizedBox(width: 300.w, child: const SideBar()),
+                  const Spacer(),
+                  ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: 760.w,
+                      ),
+                      child: const TabbedScreen()),
+                  const Spacer(),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

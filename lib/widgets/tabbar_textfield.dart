@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wallet_xuno/constants/appColour.dart';
 
 class MyInputTextField extends StatefulWidget {
   final String title;
-  final double value;
+  final double? value;
   // final String hint;
   // final String helperText;
   final TextInputType inputType;
   // final Color backColor;
   final Icon? suffixIcon;
+  final TextEditingController? controller;
+  final bool readOnly;
 
   const MyInputTextField({
     super.key,
@@ -16,8 +20,10 @@ class MyInputTextField extends StatefulWidget {
     // required this.helperText,
     required this.inputType,
     // required this.backColor,
-    required this.value,
+    this.value,
     this.suffixIcon,
+    this.controller,
+    required this.readOnly,
   });
 
   @override
@@ -27,7 +33,7 @@ class MyInputTextField extends StatefulWidget {
 class _MyInputTextFieldState extends State<MyInputTextField> {
   final TextEditingController _textEditingController = TextEditingController();
   // final FocusNode _focusNode = FocusNode();
-  final Color _borderColor = Colors.black;
+  final Color _borderColor = Appcolour.border;
   final double _borderSize = 1;
 
   @override
@@ -45,21 +51,20 @@ class _MyInputTextFieldState extends State<MyInputTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      width: 160,
+      // height: 60,
+      width: 355.w,
       decoration: BoxDecoration(
         border: Border.all(color: _borderColor, width: _borderSize),
         borderRadius: BorderRadius.circular(8),
         // color: widget.backColor,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Row(
         children: [
           Expanded(
             child: TextFormField(
               controller: _textEditingController,
               // focusNode: _focusNode,
-              readOnly: true,
+              readOnly: widget.readOnly,
               keyboardType: widget.inputType,
               // cursorColor: Colors.white,
               maxLength: 500,
@@ -67,8 +72,8 @@ class _MyInputTextFieldState extends State<MyInputTextField> {
               decoration: InputDecoration(
                 counterText: "",
                 // hintText: widget.hint,
-                hintStyle: const TextStyle(color: Colors.black),
-                floatingLabelStyle: const TextStyle(color: Colors.black),
+                hintStyle: const TextStyle(color: Appcolour.black),
+                floatingLabelStyle: const TextStyle(color: Appcolour.black),
                 labelText: widget.title,
                 // helperText: widget.helperText,
                 border: InputBorder.none,

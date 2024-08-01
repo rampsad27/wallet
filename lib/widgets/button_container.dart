@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:wallet_xuno/constants/appColour.dart';
 
 class CustomButtonContainer extends StatefulWidget {
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final String text;
   final Icon? icon;
 
   const CustomButtonContainer({
     super.key,
-    required this.height,
-    required this.width,
+    this.height,
+    this.width,
     required this.text,
     this.icon,
   });
@@ -19,13 +20,13 @@ class CustomButtonContainer extends StatefulWidget {
 }
 
 class CustomButtonContainerState extends State<CustomButtonContainer> {
-  final Color _borderColor = Colors.black;
+  final Color _borderColor = Appcolour.border;
   Color _backgroundColor = Colors.transparent;
 
   void _onTap() {
     setState(() {
       _backgroundColor = _backgroundColor == Colors.transparent
-          ? Colors.green
+          ? Appcolour.green
           : Colors.transparent;
     });
   }
@@ -40,7 +41,7 @@ class CustomButtonContainerState extends State<CustomButtonContainer> {
         decoration: BoxDecoration(
           border: Border.all(
               color: _borderColor, width: 1), // Example border color and size
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(6),
           color: _backgroundColor,
         ),
         child: Center(

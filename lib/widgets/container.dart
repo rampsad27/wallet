@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CustomContainer extends StatefulWidget {
-  final double height;
+  final double? height;
   final double width;
-  final String text;
+  final String? text;
   final Color borderColor;
   final Color backgroundColor;
   final Color textColor;
+  final Widget? child;
 
   const CustomContainer({
     super.key,
-    required this.height,
+    this.height,
     required this.width,
-    required this.text,
+    this.text,
     required this.borderColor,
     required this.backgroundColor,
     required this.textColor,
+    this.child,
   });
 
   @override
@@ -35,12 +37,13 @@ class CustomContainerState extends State<CustomContainer> {
         borderRadius: BorderRadius.circular(8),
         color: widget.backgroundColor,
       ),
-      child: Center(
-        child: Text(
-          widget.text,
-          style: TextStyle(color: widget.textColor), // Example text style
-        ),
-      ),
+      child: widget.child ??
+          Center(
+            child: Text(
+              widget.text ?? '', // Add null check
+              style: TextStyle(color: widget.textColor), // Example text style
+            ),
+          ),
     );
   }
 }
