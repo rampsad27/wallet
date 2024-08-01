@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUtil
+import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
 
 void main() {
@@ -11,13 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1920, 961), // Replace with your design size
-      minTextAdapt:
-          true, // Optional: Adjust text scaling based on the design size
-      builder: (context, child) => const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: WalletScreen(),
+    return BlocProvider(
+      create: (context) => AmountBloc(),
+      child: ScreenUtilInit(
+        designSize: const Size(1920, 961), // Replace with your design size
+        minTextAdapt:
+            true, // Optional: Adjust text scaling based on the design size
+        builder: (context, child) => const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: WalletScreen(),
+        ),
       ),
     );
   }

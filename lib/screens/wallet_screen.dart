@@ -73,29 +73,25 @@ class _WalletScreenState extends State<WalletScreen> {
         ),
       ),
       drawer: isMobile(context) ? const Drawer(child: SideBar()) : null,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Center(
-            child: SizedBox(
-              // color: const Color.fromARGB(255, 192, 82, 188),
-              height: 773.h,
-              width: 1780.w,
-              child: Row(
-                children: [
-                  if (isDesktop(context))
-                    SizedBox(width: 300.w, child: const SideBar()),
-                  const Spacer(),
-                  ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: 760.w,
-                      ),
-                      child: const TabbedScreen()),
-                  const Spacer(),
-                ],
-              ),
-            ),
-          );
-        },
+      body: Center(
+        child: SizedBox(
+          // color: const Color.fromARGB(255, 223, 200, 222),
+          height: 773.h,
+          width: 1780.w,
+          child: Row(
+            children: [
+              if (isDesktop(context))
+                SizedBox(width: 300.w, child: const SideBar()),
+              const Spacer(),
+              ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 760.w,
+                  ),
+                  child: const TabbedScreen()),
+              const Spacer(),
+            ],
+          ),
+        ),
       ),
     );
   }
