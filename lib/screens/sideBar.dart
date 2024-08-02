@@ -17,7 +17,10 @@ class _SideBarState extends State<SideBar> {
       // mainAxisAlignment: MainAxisAlignment.start,
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Expanded ListView to take available space
+        SizedBox(
+          height: 20.h,
+        ),
+        // Expanded ListView to take available space which i dont want
         Expanded(
           child: ListView(
             children: SidebarValues.items,

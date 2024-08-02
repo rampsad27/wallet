@@ -50,8 +50,7 @@ class CustomButtonContainerState extends State<CustomButtonContainer> {
             children: [
               if (widget.icon != null) ...[
                 widget.icon!,
-                const SizedBox(
-                    width: 8), // Add some space between the icon and text
+                const SizedBox(width: 8), // Add some space
               ],
               Text(
                 widget.text,

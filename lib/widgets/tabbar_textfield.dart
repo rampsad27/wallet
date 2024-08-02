@@ -5,10 +5,7 @@ import 'package:wallet_xuno/constants/appColour.dart';
 class MyInputTextField extends StatefulWidget {
   final String title;
   final double? value;
-  // final String hint;
-  // final String helperText;
   final TextInputType inputType;
-  // final Color backColor;
   final Icon? suffixIcon;
   final TextEditingController? controller;
   final bool readOnly;
@@ -16,10 +13,7 @@ class MyInputTextField extends StatefulWidget {
   const MyInputTextField({
     super.key,
     required this.title,
-    // required this.hint,
-    // required this.helperText,
     required this.inputType,
-    // required this.backColor,
     this.value,
     this.suffixIcon,
     this.controller,
@@ -31,66 +25,58 @@ class MyInputTextField extends StatefulWidget {
 }
 
 class _MyInputTextFieldState extends State<MyInputTextField> {
-  final TextEditingController _textEditingController = TextEditingController();
-  // final FocusNode _focusNode = FocusNode();
+  late TextEditingController _textEditingController;
   final Color _borderColor = Appcolour.border;
   final double _borderSize = 1;
 
   @override
   void initState() {
     super.initState();
-    _textEditingController.text = widget.value.toString();
+    _textEditingController = widget.controller ?? TextEditingController();
+    if (widget.value != null) {
+      _textEditingController.text = widget.value.toString();
+    }
+  }
 
-    // _focusNode.addListener(() {
-    //   setState(() {
-    //     _borderSize = _focusNode.hasFocus ? 1.7 : 1;
-    //   });
-    // });
+  @override
+  void didUpdateWidget(MyInputTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != null &&
+        widget.value.toString() != _textEditingController.text) {
+      _textEditingController.text = widget.value.toString();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 60,
-      width: 355.w,
+      width: 368.w,
       decoration: BoxDecoration(
         border: Border.all(color: _borderColor, width: _borderSize),
         borderRadius: BorderRadius.circular(8),
-        // color: widget.backColor,
       ),
       child: Row(
         children: [
           Expanded(
             child: TextFormField(
               controller: _textEditingController,
-              // focusNode: _focusNode,
               readOnly: widget.readOnly,
               keyboardType: widget.inputType,
-              // cursorColor: Colors.white,
               maxLength: 500,
-              maxLines: 1,
               decoration: InputDecoration(
-                counterText: "",
-                // hintText: widget.hint,
-                hintStyle: const TextStyle(color: Appcolour.black),
-                floatingLabelStyle: const TextStyle(color: Appcolour.black),
                 labelText: widget.title,
-                // helperText: widget.helperText,
                 border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
+                counterText: "",
                 suffixIcon: widget.suffixIcon,
               ),
             ),
           ),
-          // const Icon(Icons.check),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // _focusNode.dispose();
-    _textEditingController.dispose();
-    super.dispose();
   }
 }

@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
@@ -19,6 +17,10 @@ class TabbedScreen extends StatefulWidget {
 
 class _TabbedScreenState extends State<TabbedScreen> {
   final TextEditingController _sendController = TextEditingController();
+  double _recipientGets = 0.0;
+  double _afterConversion = 0.0;
+  double _rate = 133.64; // Set a default rate
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +36,6 @@ class _TabbedScreenState extends State<TabbedScreen> {
 
   void _onSendAmountChanged() {
     double sendValue = double.tryParse(_sendController.text) ?? 0.0;
-    log('Send amount changed: $sendValue'); // Log the amount
     context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
   }
 
@@ -48,8 +49,13 @@ class _TabbedScreenState extends State<TabbedScreen> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             title: const TabBar(
-              indicatorColor: Appcolour.green,
-              labelColor: Colors.black,
+              indicator: UnderlineTabIndicator(
+                borderSide: BorderSide(
+                  width: 1.5,
+                  color: Appcolour.green,
+                ),
+                insets: EdgeInsets.symmetric(horizontal: 75),
+              ),
               tabs: [
                 Tab(text: 'USD to NPR'),
                 Tab(text: 'USD to USD'),
@@ -57,186 +63,215 @@ class _TabbedScreenState extends State<TabbedScreen> {
               ],
             ),
           ),
-          body: BlocBuilder<AmountBloc, AmountState>(
-            builder: (context, state) {
-              double recipientGets = 0.0;
+          body: BlocListener<AmountBloc, AmountState>(
+            listener: (context, state) {
               if (state is AmountUpdated) {
-                recipientGets = state.recipientGets;
-                log('AmountUpdated state BlocBuilder received: $recipientGets');
-              } else {
-                log('State is not AmountUpdated: $state');
+                setState(() {
+                  _recipientGets = state.recipientGets;
+                  _afterConversion = state.afterConversion;
+                  _rate = state.rate; // Update rate if it changes
+                });
               }
-              return TabBarView(
-                children: [
-                  // First Tab - USD to NPR
-                  MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              MyInputTextField(
-                                title: "You Send",
-                                controller: _sendController,
-                                inputType: TextInputType.number,
-                                readOnly: false,
-                                suffixIcon: const Icon(Icons.usb),
-                              ),
-                              // log(_sendController.text),
-                              const SizedBox(width: 4),
-                              MyInputTextField(
-                                readOnly: true,
-                                title: "Recipient Gets",
-                                value: recipientGets,
-                                inputType: TextInputType.number,
-                                suffixIcon: const Icon(Icons.near_me),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CustomButtonContainer(
-                                //raj m
-                                height: 44.h,
-                                width: 172.w,
-                                text: "Instant",
-                              ),
-                              CustomButtonContainer(
-                                height: 44.h,
-                                width: 172.w,
-                                text: "Same Day",
-                              ),
-                              CustomButtonContainer(
-                                height: 44.h,
-                                width: 172.w,
-                                text: "Standard",
-                              ),
-                              CustomButtonContainer(
-                                height: 44.h,
-                                width: 172.w,
-                                text: "Best Deal",
-                                icon: const Icon(Icons.star_border_purple500),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          CustomContainer(
-                            height: 40.h,
-                            width: 740.w,
-                            text: "Message regarding delivery limits",
-                            borderColor: Appcolour.red,
-                            backgroundColor: Colors.transparent,
-                            textColor: Appcolour.red,
-                          ),
-                          const SizedBox(height: 12),
-                          CustomContainer(
-                            height: 190.h,
-                            width: 740,
-                            borderColor: Colors.transparent,
-                            backgroundColor:
-                                const Color.fromARGB(255, 221, 237, 222),
-                            textColor: Colors.black,
-                            child: _calculateFee(),
-                          ),
-                          const SizedBox(height: 20),
-                          CustomContainer(
-                            height: 58.h,
-                            width: 740,
-                            borderColor: Colors.transparent,
-                            backgroundColor:
-                                const Color.fromARGB(255, 221, 237, 222),
-                            textColor: Colors.black,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text("Total debit amount from Walllet"),
-                                  Spacer(),
-                                  Text("Sdf")
-                                ],
-                              ),
+            },
+            child: TabBarView(
+              children: [
+                // First Tab - USD to NPR
+                MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            MyInputTextField(
+                              title: "You Send",
+                              controller: _sendController,
+                              inputType: TextInputType.number,
+                              readOnly: false,
+                              suffixIcon: const Icon(Icons.usb),
+                            ),
+                            const SizedBox(width: 4),
+                            MyInputTextField(
+                              readOnly: true,
+                              title: "Recipient Gets",
+                              value: _recipientGets,
+                              inputType: TextInputType.number,
+                              suffixIcon: const Icon(Icons.near_me),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomButtonContainer(
+                              height: 44.h,
+                              width: 172.w,
+                              text: "Instant",
+                            ),
+                            CustomButtonContainer(
+                              height: 44.h,
+                              width: 172.w,
+                              text: "Same Day",
+                            ),
+                            CustomButtonContainer(
+                              height: 44.h,
+                              width: 172.w,
+                              text: "Standard",
+                            ),
+                            CustomButtonContainer(
+                              height: 44.h,
+                              width: 172.w,
+                              text: "Best Deal",
+                              icon: const Icon(Icons.star_border_purple500),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        CustomContainer(
+                          height: 40.h,
+                          width: 740.w,
+                          text: "Message regarding delivery limits,",
+                          borderColor: Appcolour.red,
+                          backgroundColor: Colors.transparent,
+                          textColor: Appcolour.red,
+                        ),
+                        const SizedBox(height: 12),
+                        CustomContainer(
+                          height: 180.h,
+                          width: 740,
+                          borderColor: Colors.transparent,
+                          backgroundColor: Appcolour.backgroundContainer,
+                          textColor: Colors.black,
+                          child: _calculateFee(),
+                        ),
+                        const SizedBox(height: 20),
+                        CustomContainer(
+                          height: 58.h,
+                          width: 740,
+                          borderColor: Colors.transparent,
+                          backgroundColor: Appcolour.backgroundContainer,
+                          textColor: Colors.black,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  "Total debit amount from Wallet",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  "${_sendController.text} USD",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          const CustomContainer(
-                            height: 40,
-                            width: 740,
-                            borderColor: Colors.transparent,
-                            backgroundColor: Colors.transparent,
-                            textColor: Colors.black,
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("You just saved"),
-                                  Spacer(),
-                                  Text("Compare")
-                                ],
-                              ),
+                        ),
+                        const SizedBox(height: 12),
+                        const CustomContainer(
+                          height: 40,
+                          width: 740,
+                          borderColor: Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                          textColor: Colors.black,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("You just saved"),
+                                Spacer(),
+                                Text("Compare")
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          const CustomButtonContainer(
-                            height: 40,
-                            width: 420,
-                            text: "Continue",
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 12),
+                        const CustomButtonContainer(
+                          height: 40,
+                          width: 740,
+                          text: "Continue",
+                        ),
+                      ],
                     ),
                   ),
-                  // Second Tab - USD to USD
-                  MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: const Center(child: Text("USD to USD")),
-                  ),
-                  // Third Tab - Send Now Convert Later
-                  MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: const Center(child: Text("Send Now Convert Later")),
-                  ),
-                ],
-              );
-            },
+                ),
+                // Second Tab - USD to USD
+                MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: const Center(child: Text("USD to USD")),
+                ),
+                // Third Tab - Send Now Convert Later
+                MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: const Center(child: Text("Send Now Convert Later")),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  _calculateFee() {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
+  Widget _calculateFee() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           Row(
-            children: [Text("You Send"), Spacer(), Text("df")],
+            children: [
+              const Text(
+                "You Send",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              Text(
+                "${_sendController.text} USD",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
-          Row(
-            children: [Text("Conversion fee"), Spacer(), Text("df")],
+          const SizedBox(height: 4),
+          const Row(
+            children: [Text("Conversion fee"), Spacer(), Text("-0.70%")],
           ),
           Row(
             children: [
-              Text("Amount after conversion fees"),
-              Spacer(),
-              Text("df")
+              const Text("Amount after conversion fees"),
+              const Spacer(),
+              Text("${_afterConversion.toStringAsFixed(2)} USD"),
             ],
           ),
+          const SizedBox(height: 4),
           Row(
-            children: [Text("New customer rate"), Spacer(), Text("df")],
+            children: [
+              const Text("New customer rate"),
+              const Spacer(),
+              Text("x $_rate"),
+            ],
           ),
+          const SizedBox(height: 4),
           Row(
-            children: [Text("Your Recipient gets"), Spacer(), Text("df")],
+            children: [
+              const Text(
+                "Your Recipient gets",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              Text(
+                '$_recipientGets NPR',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ],
       ),

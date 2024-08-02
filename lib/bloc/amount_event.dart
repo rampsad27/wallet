@@ -1,8 +1,17 @@
 part of 'amount_bloc.dart';
 
-abstract class AmountEvent {}
+abstract class AmountEvent extends Equatable {
+  const AmountEvent();
+
+  @override
+  List<Object> get props => [];
+}
 
 class UpdateSenderAmount extends AmountEvent {
-  final double amount;
-  UpdateSenderAmount(this.amount);
+  final double senderAmount;
+
+  const UpdateSenderAmount(this.senderAmount);
+
+  @override
+  List<Object> get props => [senderAmount];
 }
