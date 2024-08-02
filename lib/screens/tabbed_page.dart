@@ -35,19 +35,25 @@ class _TabbedScreenState extends State<TabbedScreen> {
 
   void _onSendAmountChanged() {
     double sendValue = double.tryParse(_sendController.text) ?? 0.0;
+    if (sendValue > 3000) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Amount should be less than 3000')),
+      );
+      return;
+    }
     context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
   }
 
-  String? _validateInput(String? value) {
-    final number = double.tryParse(value!);
-    if (number == null || number <= 0) {
-      return 'Enter a positive number';
-    }
-    if (number > 3000) {
-      return 'Amount should be less than 3000';
-    }
-    return null;
-  }
+  // String? _validateInput(String? value) {
+  //   final number = double.tryParse(value!);
+  //   if (number == null || number <= 0) {
+  //     return 'Enter a positive number';
+  //   }
+  //   if (number > 3000) {
+  //     return 'Amounadbe less than 3000';
+  //   }
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +107,7 @@ class _TabbedScreenState extends State<TabbedScreen> {
                               controller: _sendController,
                               inputType: const TextInputType.numberWithOptions(
                                   decimal: true),
-                              validator: _validateInput,
+                              // validator: _validateInput,
                               readOnly: false,
                               suffixIcon: const Icon(Icons.usb),
                             ),

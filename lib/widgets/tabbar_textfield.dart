@@ -10,7 +10,7 @@ class MyInputTextField extends StatefulWidget {
   final Icon? suffixIcon;
   final TextEditingController? controller;
   final bool readOnly;
-  final String? Function(String?)? validator;
+  // final String? Function(String?)? validator;
 
   const MyInputTextField({
     super.key,
@@ -20,7 +20,7 @@ class MyInputTextField extends StatefulWidget {
     this.suffixIcon,
     this.controller,
     required this.readOnly,
-    this.validator,
+    // this.validator,
   });
 
   @override
@@ -69,8 +69,8 @@ class MyInputTextFieldState extends State<MyInputTextField> {
                 FilteringTextInputFormatter.allow(RegExp(
                     r'^\d*\.?\d{0,2}')), //to ensure 2 digits after decimal+ only int as input
               ],
-              maxLength: 7,
-              validator: widget.validator,
+              maxLength: 1000,
+              // validator: widget.validator,
               decoration: InputDecoration(
                 labelText: widget.title,
                 border: InputBorder.none,
