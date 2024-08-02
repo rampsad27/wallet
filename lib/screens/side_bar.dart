@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_xuno/constants/appColour.dart';
-import 'package:wallet_xuno/widgets/sideBar_values.dart';
+import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/widgets/sidebar_values.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wallet_xuno/constants/appColour.dart';
+import 'package:wallet_xuno/constants/app_colour.dart';
 
 class CustomButtonContainer extends StatefulWidget {
   final double? height;

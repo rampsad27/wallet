@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
-import 'package:wallet_xuno/constants/appColour.dart';
+import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/widgets/button_container.dart';
-import 'package:wallet_xuno/widgets/container.dart';
+import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
 class TabbedScreen extends StatefulWidget {
@@ -37,6 +36,17 @@ class _TabbedScreenState extends State<TabbedScreen> {
   void _onSendAmountChanged() {
     double sendValue = double.tryParse(_sendController.text) ?? 0.0;
     context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
+  }
+
+  String? _validateInput(String? value) {
+    final number = double.tryParse(value!);
+    if (number == null || number <= 0) {
+      return 'Enter a positive number';
+    }
+    if (number > 3000) {
+      return 'Amount should be less than 3000';
+    }
+    return null;
   }
 
   @override
@@ -89,7 +99,9 @@ class _TabbedScreenState extends State<TabbedScreen> {
                             MyInputTextField(
                               title: "You Send",
                               controller: _sendController,
-                              inputType: TextInputType.number,
+                              inputType: const TextInputType.numberWithOptions(
+                                  decimal: true),
+                              validator: _validateInput,
                               readOnly: false,
                               suffixIcon: const Icon(Icons.usb),
                             ),
@@ -165,7 +177,7 @@ class _TabbedScreenState extends State<TabbedScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  "${_sendController.text} USD",
+                                  "${_sendController.text.isNotEmpty ? _sendController.text : '0.0'} USD",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -235,7 +247,7 @@ class _TabbedScreenState extends State<TabbedScreen> {
               ),
               const Spacer(),
               Text(
-                "${_sendController.text} USD",
+                "${_sendController.text.isNotEmpty ? _sendController.text : '0.0'} USD",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],

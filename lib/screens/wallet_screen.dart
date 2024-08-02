@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wallet_xuno/constants/appColour.dart';
-import 'package:wallet_xuno/screens/sideBar.dart';
-import 'package:wallet_xuno/screens/tabbedPage.dart';
+import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/screens/side_bar.dart';
+import 'package:wallet_xuno/screens/tabbed_page.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});

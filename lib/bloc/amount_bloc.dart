@@ -12,7 +12,8 @@ class AmountBloc extends Bloc<AmountEvent, AmountState> {
     on<UpdateSenderAmount>((event, emit) {
       // Calculate recipientGets based on senderAmount
       double afterConversion = event.senderAmount * (1 - _conversionFee);
-      double recipientGets = afterConversion * _rate;
+      double recipientGets =
+          double.parse((afterConversion * _rate).toStringAsFixed(2));
       emit(AmountUpdated(recipientGets, afterConversion, _rate));
     });
   }
