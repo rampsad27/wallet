@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUti
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/route/app_route.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
 
 void main() {
@@ -21,15 +22,16 @@ class MyApp extends StatelessWidget {
         designSize: const Size(1920, 961), // Replace with your design size
         minTextAdapt:
             true, // Optional: Adjust text scaling based on the design size
-        builder: (context, child) => MaterialApp(
+        builder: (context, child) => MaterialApp.router(
+          routerConfig: goRouter, debugShowCheckedModeBanner: false,
           theme: ThemeData(
             textTheme: GoogleFonts.plusJakartaSansTextTheme(
               Theme.of(context).textTheme.apply(
                   bodyColor: Appcolour.black, displayColor: Appcolour.black),
             ),
           ),
-          debugShowCheckedModeBanner: false,
-          home: const WalletScreen(),
+
+          // home: const WalletScreen(),
         ),
       ),
     );

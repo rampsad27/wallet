@@ -1,43 +1,70 @@
+// private navigators
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wallet_xuno/screens/hoem.dart';
-import 'package:wallet_xuno/screens/new.dart';
+import 'package:wallet_xuno/screens/emptyScreen.dart';
 import 'package:wallet_xuno/screens/recipientScreen.dart';
+import 'package:wallet_xuno/screens/tabbed_page.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
+import 'package:wallet_xuno/screens/wrapper.dart';
 
-class AppRouter {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
+final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
 
-  static final GoRouter router = GoRouter(
-    initialLocation: "/",
-    navigatorKey: navigatorKey,
-    routes: [
-      ShellRoute(
-        navigatorKey: GlobalKey<NavigatorState>(),
-        builder: (context, state, child) {
-          return Scaffold(
-            body: Row(
-              children: [
-                const NavigationRailWidget(),
-                Expanded(child: child),
+// the one and only GoRouter instance
+final goRouter = GoRouter(
+  initialLocation: '/home',
+  navigatorKey: _rootNavigatorKey,
+  routes: [
+    // Stateful nested navigation based on:
+    // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        // the UI shell
+        return WrapperWidget(navigationShell: navigationShell);
+      },
+      branches: [
+        // first branch (A)
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorAKey,
+          routes: [
+            // top route inside branch
+            GoRoute(
+              path: '/home',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: TabbedScreen(),
+              ),
+              routes: [
+                // child route
+                GoRoute(
+                  path: 'reciepient',
+                  builder: (context, state) => const Recipientscreen(),
+                ),
               ],
             ),
-          );
-        },
-        routes: [
-          GoRoute(
-            path: '/',
-            builder: (context, state) => const WalletScreen(),
-            routes: [
-              GoRoute(
-                path: 'usd-to-npr',
-                builder: (context, state) => const Recipientscreen(),
+          ],
+        ),
+        // second branch (B)
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorBKey,
+          routes: [
+            // top route inside branch
+            GoRoute(
+              path: '/account',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: WalletScreen(),
               ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  );
-}
+              routes: const [
+                // child route
+                // GoRoute(
+                //   path: '21',
+                //   builder: (context, state) => const Emptyscreen(),
+                // ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ],
+);
