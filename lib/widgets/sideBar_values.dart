@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 class SidebarValues {
   static final List<Widget> items = [
-    const ListTile(
-      leading: Icon(Icons.home),
-      title: Text("Home"),
+    InkWell(
+      onTap: () {},
+      child: const ListTile(
+        leading: Icon(Icons.home),
+        title: Text("Home"),
+      ),
     ),
     const ListTile(
       leading: Icon(Icons.account_balance),

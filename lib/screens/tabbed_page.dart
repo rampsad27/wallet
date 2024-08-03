@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
-import 'package:wallet_xuno/widgets/button_container.dart';
-import 'package:wallet_xuno/widgets/custom_container.dart';
-import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
+import 'package:wallet_xuno/screens/usd_to_usd.dart';
+import 'package:wallet_xuno/screens/usd_to_npr.dart';
 
 class TabbedScreen extends StatefulWidget {
   const TabbedScreen({super.key});
@@ -15,26 +13,26 @@ class TabbedScreen extends StatefulWidget {
 }
 
 class _TabbedScreenState extends State<TabbedScreen> {
-  final TextEditingController _sendController = TextEditingController();
-  double _recipientGets = 0.0;
-  double _afterConversion = 0.0;
-  double _rate = 133.64; // Set a default rate
+  final TextEditingController sendController = TextEditingController();
+  double recipientGets = 0.0;
+  double afterConversion = 0.0;
+  double rate = 133.64; // Set a default rate
 
   @override
   void initState() {
     super.initState();
-    _sendController.addListener(_onSendAmountChanged);
+    sendController.addListener(onSendAmountChanged);
   }
 
   @override
   void dispose() {
-    _sendController.removeListener(_onSendAmountChanged);
-    _sendController.dispose();
+    sendController.removeListener(onSendAmountChanged);
+    sendController.dispose();
     super.dispose();
   }
 
-  void _onSendAmountChanged() {
-    double sendValue = double.tryParse(_sendController.text) ?? 0.0;
+  void onSendAmountChanged() {
+    double sendValue = double.tryParse(sendController.text) ?? 0.0;
     if (sendValue > 3000) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Amount should be less than 3000')),
@@ -44,19 +42,11 @@ class _TabbedScreenState extends State<TabbedScreen> {
     context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
   }
 
-  // String? _validateInput(String? value) {
-  //   final number = double.tryParse(value!);
-  //   if (number > 3000) {
-  //     return 'Amounadbe less than 3000';
-  //   }
-  //   return null;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: DefaultTabController(
-        length: 3, // Number of tabs
+        length: 2, // Number of tabs
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -67,228 +57,40 @@ class _TabbedScreenState extends State<TabbedScreen> {
                   width: 1.5,
                   color: Appcolour.green,
                 ),
-                insets: EdgeInsets.symmetric(horizontal: 75),
+                insets: EdgeInsets.symmetric(horizontal: 182),
               ),
+              labelStyle: TextStyle(
+                fontSize: 14, // Adjust size for selected tab
+                fontWeight: FontWeight.bold,
+                color: Appcolour.black,
+              ),
+              unselectedLabelStyle: TextStyle(
+                  fontSize: 12, // Adjust size for unselected tabs
+                  fontWeight: FontWeight.normal,
+                  color: Appcolour.black),
               tabs: [
                 Tab(text: 'USD to NPR'),
                 Tab(text: 'USD to USD'),
-                Tab(text: 'Send Now Convert Later'),
               ],
             ),
           ),
-          body: BlocListener<AmountBloc, AmountState>(
-            listener: (context, state) {
-              if (state is AmountUpdated) {
-                setState(() {
-                  _recipientGets = state.recipientGets;
-                  _afterConversion = state.afterConversion;
-                  _rate = state.rate; // Update rate if it changes
-                });
-              }
-            },
+          body: Container(
+            color: Colors.transparent, // Make TabBarView transparent
             child: TabBarView(
               children: [
                 // First Tab - USD to NPR
-                MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            MyInputTextField(
-                              title: "You Send",
-                              controller: _sendController,
-                              inputType: const TextInputType.numberWithOptions(
-                                  decimal: true),
-                              // validator: _validateInput,
-                              readOnly: false,
-                              suffixIcon: const Icon(Icons.usb),
-                            ),
-                            const SizedBox(width: 4),
-                            MyInputTextField(
-                              readOnly: true,
-                              title: "Recipient Gets",
-                              value: _recipientGets,
-                              inputType: TextInputType.number,
-                              suffixIcon: const Icon(Icons.near_me),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomButtonContainer(
-                              height: 44.h,
-                              width: 172.w,
-                              text: "Instant",
-                            ),
-                            CustomButtonContainer(
-                              height: 44.h,
-                              width: 172.w,
-                              text: "Same Day",
-                            ),
-                            CustomButtonContainer(
-                              height: 44.h,
-                              width: 172.w,
-                              text: "Standard",
-                            ),
-                            CustomButtonContainer(
-                              height: 44.h,
-                              width: 172.w,
-                              text: "Best Deal",
-                              icon: const Icon(Icons.star_border_purple500),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        CustomContainer(
-                          height: 40.h,
-                          width: 740.w,
-                          text: "Message regarding delivery limits,",
-                          borderColor: Appcolour.red,
-                          backgroundColor: Colors.transparent,
-                          textColor: Appcolour.red,
-                        ),
-                        const SizedBox(height: 12),
-                        CustomContainer(
-                          height: 180.h,
-                          width: 740,
-                          borderColor: Colors.transparent,
-                          backgroundColor: Appcolour.backgroundContainer,
-                          textColor: Colors.black,
-                          child: _calculateFee(),
-                        ),
-                        const SizedBox(height: 20),
-                        CustomContainer(
-                          height: 58.h,
-                          width: 740,
-                          borderColor: Colors.transparent,
-                          backgroundColor: Appcolour.backgroundContainer,
-                          textColor: Colors.black,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  "Total debit amount from Wallet",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  "${_sendController.text.isNotEmpty ? _sendController.text : '0.0'} USD",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        const CustomContainer(
-                          height: 40,
-                          width: 740,
-                          borderColor: Colors.transparent,
-                          backgroundColor: Colors.transparent,
-                          textColor: Colors.black,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("You just saved"),
-                                Spacer(),
-                                Text("Compare")
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        const CustomButtonContainer(
-                          height: 40,
-                          width: 740,
-                          text: "Continue",
-                        ),
-                      ],
-                    ),
-                  ),
+                UsdToNpr(
+                  sendController: sendController,
+                  recipientGets: recipientGets,
+                  afterConversion: afterConversion,
+                  rate: rate,
                 ),
                 // Second Tab - USD to USD
-                MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  child: const Center(child: Text("USD to USD")),
-                ),
-                // Third Tab - Send Now Convert Later
-                MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  child: const Center(child: Text("Send Now Convert Later")),
-                ),
+                const UsdToUsd(),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _calculateFee() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Text(
-                "You Send",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              Text(
-                "${_sendController.text.isNotEmpty ? _sendController.text : '0.0'} USD",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          const Row(
-            children: [Text("Conversion fee"), Spacer(), Text("-0.70%")],
-          ),
-          Row(
-            children: [
-              const Text("Amount after conversion fees"),
-              const Spacer(),
-              Text("${_afterConversion.toStringAsFixed(2)} USD"),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Text("New customer rate"),
-              const Spacer(),
-              Text("x $_rate"),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Text(
-                "Your Recipient gets",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              Text(
-                '$_recipientGets NPR',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

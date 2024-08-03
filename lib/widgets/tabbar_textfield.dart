@@ -53,18 +53,23 @@ class MyInputTextFieldState extends State<MyInputTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 368.w,
+      width: 360.w,
       decoration: BoxDecoration(
         border: Border.all(color: _borderColor, width: _borderSize),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: TextFormField(
               controller: _textEditingController,
               readOnly: widget.readOnly,
               keyboardType: widget.inputType,
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(
                     r'^\d*\.?\d{0,2}')), //to ensure 2 digits after decimal+ only int as input

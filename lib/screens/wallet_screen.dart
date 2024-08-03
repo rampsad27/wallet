@@ -36,72 +36,65 @@ class _WalletScreenState extends State<WalletScreen> {
     });
   }
 
-  void _toggleSearchIcon() {
-    setState(() {
-      searchIsIconPressed = !searchIsIconPressed;
-    });
-  }
+  // void _toggleSearchIcon() {
+  //   setState(() {
+  //     searchIsIconPressed = !searchIsIconPressed;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
+        shadowColor: Appcolour.background,
+        surfaceTintColor: Colors.transparent,
+        elevation: 6,
+        backgroundColor: Appcolour.white,
+        actions: [
+          const SizedBox(width: 50),
+          SvgPicture.asset(
+            'assets/svg/logo.svg',
+            height: 20,
+            width: 50,
+          ),
+          const Spacer(),
+          InkWell(
+            onTap: _toggleNotifIcon,
+            child: Image.asset(
+              notifIsIconPressed ? notifIconFilled : notifIconNotfilled,
+              height: 28,
+              width: 28,
+            ),
+          ),
+          const SizedBox(width: 12),
+          InkWell(
+            onTap: () {},
+            child: Image.asset(
+              'assets/images/person.png',
+              height: 28,
+              width: 28,
+            ),
+          ),
+          const SizedBox(width: 32),
+        ],
+      ),
       body: Container(
+        width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Appcolour.background, Appcolour.white],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
           ),
         ),
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              child: AppBar(
-                shadowColor: Colors.black,
-                elevation: 8, // rajm
-                backgroundColor: Appcolour.white,
-                actions: [
-                  const SizedBox(width: 50),
-                  SvgPicture.asset(
-                    'assets/svg/logo.svg',
-                    height: 20,
-                    width: 50,
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: _toggleSearchIcon,
-                    child: Image.asset(
-                      searchIsIconPressed
-                          ? searchIconFilled
-                          : searchIconNotfilled,
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: _toggleNotifIcon,
-                    child: Image.asset(
-                      notifIsIconPressed ? notifIconFilled : notifIconNotfilled,
-                      height: 28,
-                      width: 28,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.person,
-                      color: Appcolour.primaryLogo,
-                    ),
-                    onPressed: () {},
-                  ),
-                  const SizedBox(width: 20),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(44.0),
               child: SizedBox(
