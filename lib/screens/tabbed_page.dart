@@ -46,9 +46,6 @@ class _TabbedScreenState extends State<TabbedScreen> {
 
   // String? _validateInput(String? value) {
   //   final number = double.tryParse(value!);
-  //   if (number == null || number <= 0) {
-  //     return 'Enter a positive number';
-  //   }
   //   if (number > 3000) {
   //     return 'Amounadbe less than 3000';
   //   }
