@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/screens/notification_dialog.dart';
 import 'package:wallet_xuno/screens/side_bar.dart';
 import 'package:wallet_xuno/screens/tabbed_page.dart';
 
@@ -34,6 +35,13 @@ class _WalletScreenState extends State<WalletScreen> {
     setState(() {
       notifIsIconPressed = !notifIsIconPressed;
     });
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const NotificationDialog();
+      },
+    );
   }
 
   // void _toggleSearchIcon() {
@@ -65,7 +73,14 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           const Spacer(),
           InkWell(
-            onTap: _toggleNotifIcon,
+            onHover: (isHovered) {
+              // Handle hover state here if needed
+              // For example, you might want to change the icon when hovered
+              setState(() {
+                notifIsIconPressed = !notifIsIconPressed;
+              });
+            },
+            onTap: _toggleNotifIcon, // Call _toggleNotifIcon on tap
             child: Image.asset(
               notifIsIconPressed ? notifIconFilled : notifIconNotfilled,
               height: 28,
@@ -98,8 +113,8 @@ class _WalletScreenState extends State<WalletScreen> {
             Padding(
               padding: const EdgeInsets.all(44.0),
               child: SizedBox(
-                // color: const Color.fromARGB(255, 208, 154, 172),
-                height: 700.h,
+                // color: const Color.fromARGB(255, 238, 219, 225),
+                height: 760.h,
                 width: 1780.w,
                 child: Row(
                   children: [

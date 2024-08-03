@@ -7,7 +7,7 @@ class MyInputTextField extends StatefulWidget {
   final String title;
   final double? value;
   final TextInputType inputType;
-  final Icon? suffixIcon;
+  final Widget? suffixIcon;
   final TextEditingController? controller;
   final bool readOnly;
   // final String? Function(String?)? validator;
@@ -53,7 +53,8 @@ class MyInputTextFieldState extends State<MyInputTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 360.w,
+      height: 80.h,
+      width: 355.w,
       decoration: BoxDecoration(
         border: Border.all(color: _borderColor, width: _borderSize),
         borderRadius: BorderRadius.circular(8),

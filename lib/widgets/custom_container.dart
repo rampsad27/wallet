@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomContainer extends StatefulWidget {
   final double? height;
@@ -34,16 +35,20 @@ class CustomContainerState extends State<CustomContainer> {
         border: Border.all(
             color: widget.borderColor,
             width: 1), // Example border color and size
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
         color: widget.backgroundColor,
       ),
-      child: widget.child ??
-          Center(
-            child: Text(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 4, 20, 4),
+        child: widget.child ??
+            Text(
               widget.text ?? '', // Add null check
-              style: TextStyle(color: widget.textColor), // Example text style
+              style: TextStyle(
+                color: widget.textColor,
+                fontSize: 16.sp,
+              ),
             ),
-          ),
+      ),
     );
   }
 }

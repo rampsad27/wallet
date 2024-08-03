@@ -8,16 +8,16 @@ import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
 class UsdToNpr extends StatefulWidget {
-  final TextEditingController sendController;
-  final double recipientGets;
-  final double afterConversion;
+  final TextEditingController usdTonprController;
+  final double nprRecipientGets;
+  final double afterUsdToNprConversion;
   final double rate;
 
   const UsdToNpr({
     super.key,
-    required this.sendController,
-    required this.recipientGets,
-    required this.afterConversion,
+    required this.usdTonprController,
+    required this.nprRecipientGets,
+    required this.afterUsdToNprConversion,
     required this.rate,
   });
 
@@ -26,30 +26,31 @@ class UsdToNpr extends StatefulWidget {
 }
 
 class _UsdToNprState extends State<UsdToNpr> {
-  late TextEditingController sendController;
-  late double recipientGets;
-  late double afterConversion;
+  late TextEditingController usdTonprController;
+  late double nprRecipientGets;
+  late double afterUsdToNprConversion;
   late double rate;
+  String _selectedButton = "Same Day";
 
   @override
   void initState() {
     super.initState();
-    sendController = widget.sendController;
-    recipientGets = widget.recipientGets;
-    afterConversion = widget.afterConversion;
+    usdTonprController = widget.usdTonprController;
+    nprRecipientGets = widget.nprRecipientGets;
+    afterUsdToNprConversion = widget.afterUsdToNprConversion;
     rate = widget.rate;
 
-    sendController.addListener(onSendAmountChanged);
+    usdTonprController.addListener(onSendAmountChanged);
   }
 
   @override
   void dispose() {
-    sendController.removeListener(onSendAmountChanged);
+    usdTonprController.removeListener(onSendAmountChanged);
     super.dispose();
   }
 
   void onSendAmountChanged() {
-    double sendValue = double.tryParse(sendController.text) ?? 0.0;
+    double sendValue = double.tryParse(usdTonprController.text) ?? 0.0;
     if (sendValue > 3000) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Amount should be less than 3000')),
@@ -59,16 +60,22 @@ class _UsdToNprState extends State<UsdToNpr> {
     context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
   }
 
+  void _selectButton(String buttonText) {
+    setState(() {
+      _selectedButton = buttonText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color.fromARGB(0, 238, 72, 72),
       body: BlocListener<AmountBloc, AmountState>(
         listener: (context, state) {
           if (state is AmountUpdated) {
             setState(() {
-              recipientGets = state.recipientGets;
-              afterConversion = state.afterConversion;
+              nprRecipientGets = state.nprRecipientGets;
+              afterUsdToNprConversion = state.afterUsdToNprConversion;
               rate = state.rate; // Update rate if it changes
             });
           }
@@ -78,64 +85,102 @@ class _UsdToNprState extends State<UsdToNpr> {
           removeTop: true,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 4),
+                const SizedBox(height: 8),
                 Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(
-                      width: 12,
-                    ),
                     MyInputTextField(
                       title: "You Send",
-                      controller: sendController,
+                      controller: usdTonprController,
                       inputType:
                           const TextInputType.numberWithOptions(decimal: true),
                       readOnly: false,
-                      suffixIcon: const Icon(Icons.usb),
+                      suffixIcon: SizedBox(
+                          height: 40.h,
+                          width: 30.w,
+                          child: Image.asset('assets/images/usd.png')),
                     ),
                     const SizedBox(width: 8),
                     MyInputTextField(
                       readOnly: true,
                       title: "Recipient Gets",
-                      value: recipientGets,
+                      value: nprRecipientGets,
                       inputType: TextInputType.number,
-                      suffixIcon: const Icon(Icons.near_me),
+                      suffixIcon: SizedBox(
+                          height: 40.h,
+                          width: 30.w,
+                          child: Image.asset('assets/images/nep.png')),
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
+                const Text("Do you have a coupon code? "),
+                const SizedBox(height: 12),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButtonContainer(
                       height: 44.h,
                       width: 172.w,
                       text: "Instant",
+                      isSelected: _selectedButton == "Instant",
+                      onTap: () => _selectButton("Instant"),
+                      textColour: Appcolour.black,
                     ),
                     CustomButtonContainer(
                       height: 44.h,
                       width: 172.w,
                       text: "Same Day",
+                      isSelected: _selectedButton == "Same Day",
+                      onTap: () => _selectButton("Same Day"),
+                      textColour: Appcolour.black,
                     ),
                     CustomButtonContainer(
                       height: 44.h,
                       width: 172.w,
                       text: "Standard",
+                      isSelected: _selectedButton == "Standard",
+                      onTap: () => _selectButton("Standard"),
+                      textColour: Appcolour.black,
                     ),
-                    CustomButtonContainer(
-                      height: 44.h,
-                      width: 172.w,
-                      text: "Best Deal",
-                      icon: const Icon(Icons.star_border_purple500),
+                    Stack(
+                      children: [
+                        CustomButtonContainer(
+                          height: 44.h,
+                          width: 172.w,
+                          text: "Best Deal",
+                          icon: SizedBox(
+                              height: 24.h,
+                              child: Image.asset('assets/images/stars.png')),
+                          isSelected: _selectedButton == "Best Deal",
+                          onTap: () => _selectButton("Best Deal"),
+                          textColour: Appcolour.green,
+                        ),
+                        Positioned(
+                          bottom: 20,
+                          right:
+                              20, // Adjust this to position the circle horizontally
+                          child: Container(
+                            width: 10, // Adjust width
+                            height: 10, // Adjust height
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
                 CustomContainer(
                   height: 40.h,
-                  width: 740.w,
-                  text: "Message regarding delivery limits,",
+                  width: double.infinity,
+                  text: "Message regarding delivery limits",
                   borderColor: Appcolour.red,
                   backgroundColor: Colors.transparent,
                   textColor: Appcolour.red,
@@ -149,54 +194,113 @@ class _UsdToNprState extends State<UsdToNpr> {
                   textColor: Colors.black,
                   child: _calculateFee(),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                const CustomContainer(
+                  // height: 40,
+                  width: 740,
+                  borderColor: Colors.transparent,
+                  backgroundColor: Colors.transparent,
+                  textColor: Colors.black,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Delivery time"),
+                      Spacer(),
+                      Text("4-5 business days")
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
                 CustomContainer(
                   height: 58.h,
                   width: 740,
                   borderColor: Colors.transparent,
                   backgroundColor: Appcolour.backgroundContainer,
                   textColor: Colors.black,
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Total debit amount",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Spacer(),
+                      Text(
+                        "${usdTonprController.text.isNotEmpty ? usdTonprController.text : '0.0'} USD",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  // height: 40,
+                  width: 740,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.transparent,
+                      width: 1,
+                    ),
+                    color: Colors.transparent,
+                  ),
+
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.fromLTRB(24, 8, 8, 8),
                     child: Row(
                       children: [
-                        const Text(
-                          "Total debit amount from Wallet",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Image.asset(
+                          'assets/images/ru.png',
+                          height: 20.h,
+                        ),
+                        const SizedBox(width: 8),
+                        RichText(
+                          text: const TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "You just saved ",
+                              ),
+                              TextSpan(
+                                text: "1655 NPR",
+                                style: TextStyle(
+                                  color: Appcolour.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         const Spacer(),
-                        Text(
-                          "${sendController.text.isNotEmpty ? sendController.text : '0.0'} USD",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        const Text("Compare"),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.keyboard_arrow_down))
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 40,
+                    width: 740,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(6),
+                      color: Appcolour.green,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Continue",
+                        style: TextStyle(
+                          color: Appcolour.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                const CustomContainer(
-                  height: 40,
-                  width: 740,
-                  borderColor: Colors.transparent,
-                  backgroundColor: Colors.transparent,
-                  textColor: Colors.black,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("You just saved"),
-                        Spacer(),
-                        Text("Compare")
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const CustomButtonContainer(
-                  height: 40,
-                  width: 740,
-                  text: "Continue",
                 ),
               ],
             ),
@@ -207,58 +311,56 @@ class _UsdToNprState extends State<UsdToNpr> {
   }
 
   Widget _calculateFee() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Text(
-                "You Send",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              Text(
-                "${sendController.text.isNotEmpty ? sendController.text : '0.0'} USD",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          const Row(
-            children: [Text("Conversion fee"), Spacer(), Text("-0.70%")],
-          ),
-          Row(
-            children: [
-              const Text("Amount after conversion fees"),
-              const Spacer(),
-              Text("${afterConversion.toStringAsFixed(2)} USD"),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Text("New customer rate"),
-              const Spacer(),
-              Text("x $rate"),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Text(
-                "Your Recipient gets",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              Text(
-                '$recipientGets NPR',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Row(
+          children: [
+            const Text(
+              "You Send",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+            Text(
+              "${usdTonprController.text.isNotEmpty ? usdTonprController.text : '0.0'} USD",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        // const SizedBox(height: 8),
+        const Row(
+          children: [Text("Conversion fee"), Spacer(), Text("-0.70%")],
+        ),
+        Row(
+          children: [
+            const Text("Amount after conversion fees"),
+            const Spacer(),
+            Text("${afterUsdToNprConversion.toStringAsFixed(2)} USD"),
+          ],
+        ),
+        // const SizedBox(height: 8),
+        Row(
+          children: [
+            const Text("New customer rate"),
+            const Spacer(),
+            Text("x $rate"),
+          ],
+        ),
+        // const SizedBox(height: 8),
+        Row(
+          children: [
+            const Text(
+              "Recipient gets",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+            Text(
+              '$nprRecipientGets NPR',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
