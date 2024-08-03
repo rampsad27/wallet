@@ -10,12 +10,11 @@ class AmountBloc extends Bloc<AmountEvent, AmountState> {
 
   AmountBloc() : super(AmountInitial()) {
     on<UpdateSenderAmount>((event, emit) {
-      // Calculate nprRecipientGets based on senderAmount
-      double afterUsdToNprConversion =
-          event.senderAmount * (1 - _conversionFee);
-      double nprRecipientGets =
-          double.parse((afterUsdToNprConversion * _rate).toStringAsFixed(2));
-      emit(AmountUpdated(nprRecipientGets, afterUsdToNprConversion, _rate));
+      // Calculate recipientGets based on senderAmount
+      double afterConversion = event.senderAmount * (1 - _conversionFee);
+      double recipientGets =
+          double.parse((afterConversion * _rate).toStringAsFixed(2));
+      emit(AmountUpdated(recipientGets, afterConversion, _rate));
     });
   }
 }

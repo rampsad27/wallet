@@ -13,26 +13,26 @@ class TabbedScreen extends StatefulWidget {
 }
 
 class _TabbedScreenState extends State<TabbedScreen> {
-  final TextEditingController usdTonprController = TextEditingController();
-  double nprRecipientGets = 0.0;
-  double afterUsdToNprConversion = 0.0;
+  final TextEditingController sendController = TextEditingController();
+  double recipientGets = 0.0;
+  double afterConversion = 0.0;
   double rate = 133.64; // Set a default rate
 
   @override
   void initState() {
     super.initState();
-    usdTonprController.addListener(onSendAmountChanged);
+    sendController.addListener(onSendAmountChanged);
   }
 
   @override
   void dispose() {
-    usdTonprController.removeListener(onSendAmountChanged);
-    usdTonprController.dispose();
+    sendController.removeListener(onSendAmountChanged);
+    sendController.dispose();
     super.dispose();
   }
 
   void onSendAmountChanged() {
-    double sendValue = double.tryParse(usdTonprController.text) ?? 0.0;
+    double sendValue = double.tryParse(sendController.text) ?? 0.0;
     if (sendValue > 3000) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Amount should be less than 3000')),
@@ -83,16 +83,16 @@ class _TabbedScreenState extends State<TabbedScreen> {
                 children: [
                   // First Tab - USD to NPR
                   UsdToNpr(
-                    usdTonprController: usdTonprController,
-                    nprRecipientGets: nprRecipientGets,
-                    afterUsdToNprConversion: afterUsdToNprConversion,
+                    sendController: sendController,
+                    recipientGets: recipientGets,
+                    afterConversion: afterConversion,
                     rate: rate,
                   ),
                   // Second Tab - USD to USD
                   UsdToUsd(
-                    usdTonprController: usdTonprController,
-                    nprRecipientGets: nprRecipientGets,
-                    afterUsdToNprConversion: afterUsdToNprConversion,
+                    sendController: sendController,
+                    recipientGets: recipientGets,
+                    afterConversion: afterConversion,
                     rate: rate,
                   ),
                 ],

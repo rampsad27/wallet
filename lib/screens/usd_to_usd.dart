@@ -7,15 +7,15 @@ import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
 class UsdToUsd extends StatefulWidget {
-  final TextEditingController usdTonprController;
-  final double nprRecipientGets;
-  final double afterUsdToNprConversion;
+  final TextEditingController sendController;
+  final double recipientGets;
+  final double afterConversion;
   final double rate;
   const UsdToUsd({
     super.key,
-    required this.usdTonprController,
-    required this.nprRecipientGets,
-    required this.afterUsdToNprConversion,
+    required this.sendController,
+    required this.recipientGets,
+    required this.afterConversion,
     required this.rate,
   });
 
@@ -24,29 +24,29 @@ class UsdToUsd extends StatefulWidget {
 }
 
 class _UsdToUsdState extends State<UsdToUsd> {
-  late TextEditingController usdTonprController;
-  late double nprRecipientGets;
-  late double afterUsdToNprConversion;
+  late TextEditingController sendController;
+  late double recipientGets;
+  late double afterConversion;
   late double rate;
   @override
   void initState() {
     super.initState();
-    usdTonprController = widget.usdTonprController;
-    nprRecipientGets = widget.nprRecipientGets;
-    afterUsdToNprConversion = widget.afterUsdToNprConversion;
+    sendController = widget.sendController;
+    recipientGets = widget.recipientGets;
+    afterConversion = widget.afterConversion;
     rate = widget.rate;
 
-    usdTonprController.addListener(onSendAmountChanged);
+    sendController.addListener(onSendAmountChanged);
   }
 
   @override
   void dispose() {
-    usdTonprController.removeListener(onSendAmountChanged);
+    sendController.removeListener(onSendAmountChanged);
     super.dispose();
   }
 
   void onSendAmountChanged() {
-    double sendValue = double.tryParse(usdTonprController.text) ?? 0.0;
+    double sendValue = double.tryParse(sendController.text) ?? 0.0;
     if (sendValue > 3000) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Amount should be less than 3000')),
@@ -64,8 +64,8 @@ class _UsdToUsdState extends State<UsdToUsd> {
           listener: (context, state) {
             if (state is AmountUpdated) {
               setState(() {
-                nprRecipientGets = state.nprRecipientGets;
-                afterUsdToNprConversion = state.afterUsdToNprConversion;
+                recipientGets = state.recipientGets;
+                afterConversion = state.afterConversion;
                 rate = state.rate; // Update rate if it changes
               });
             }
@@ -74,7 +74,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
             const SizedBox(height: 8),
             MyInputTextField(
               title: "You Send",
-              controller: usdTonprController,
+              controller: sendController,
               inputType: const TextInputType.numberWithOptions(decimal: true),
               readOnly: false,
               suffixIcon: SizedBox(
@@ -119,7 +119,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
                   ),
                   const Spacer(),
                   Text(
-                    "${usdTonprController.text.isNotEmpty ? usdTonprController.text : '0.0'} USD",
+                    "${sendController.text.isNotEmpty ? sendController.text : '0.0'} USD",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -165,7 +165,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
             ),
             const Spacer(),
             Text(
-              "${usdTonprController.text.isNotEmpty ? usdTonprController.text : '0.0'} USD",
+              "${sendController.text.isNotEmpty ? sendController.text : '0.0'} USD",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
@@ -178,7 +178,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
           children: [
             const Text("Amount after conversion fees"),
             const Spacer(),
-            Text("${afterUsdToNprConversion.toStringAsFixed(2)} USD"),
+            Text("${afterConversion.toStringAsFixed(2)} USD"),
           ],
         ),
         // const SizedBox(height: 8),
@@ -198,7 +198,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
             ),
             const Spacer(),
             Text(
-              '$nprRecipientGets NPR',
+              '$recipientGets NPR',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
