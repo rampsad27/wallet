@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/constants/app_text.dart';
 import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
@@ -71,23 +72,26 @@ class _UsdToUsdState extends State<UsdToUsd> {
             const SizedBox(height: 8),
             MyInputTextField(
               title: "You Send",
+              width: double.infinity,
               controller: sendUsdToUsdController,
               inputType: const TextInputType.numberWithOptions(decimal: true),
               readOnly: false,
               suffixIcon: SizedBox(
                   height: 40.h,
-                  width: double.infinity,
+                  width: 30.w,
                   child: Image.asset('assets/images/usd.png')),
             ),
+            const SizedBox(height: 12),
             CustomContainer(
-              height: 180.h,
+              height: 118.h,
               width: 740,
               borderColor: Colors.transparent,
               backgroundColor: Appcolour.backgroundContainer,
               textColor: Colors.black,
               child: _calculateFee(),
             ),
-            const CustomContainer(
+            const SizedBox(height: 8),
+            CustomContainer(
               // height: 40,
               width: 740,
               borderColor: Colors.transparent,
@@ -96,12 +100,19 @@ class _UsdToUsdState extends State<UsdToUsd> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Delivery time"),
-                  Spacer(),
-                  Text("4-5 business days")
+                  Text(
+                    "Delivery time",
+                    style: AppText.normalText,
+                  ),
+                  const Spacer(),
+                  Text(
+                    "4-5 business days",
+                    style: AppText.normalText,
+                  )
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             CustomContainer(
               height: 58.h,
               width: 740,
@@ -110,18 +121,19 @@ class _UsdToUsdState extends State<UsdToUsd> {
               textColor: Colors.black,
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     "Total debit amount",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: AppText.boldText,
                   ),
                   const Spacer(),
                   Text(
                     "${sendUsdToUsdController.text.isNotEmpty ? sendUsdToUsdController.text : '0.0'} USD",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: AppText.boldText,
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             InkWell(
               onTap: () {},
               child: Container(
@@ -156,46 +168,43 @@ class _UsdToUsdState extends State<UsdToUsd> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               "You Send",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.boldText,
             ),
             const Spacer(),
             Text(
               "${sendUsdToUsdController.text.isNotEmpty ? sendUsdToUsdController.text : '0.0'} USD",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.boldText,
             ),
           ],
         ),
         // const SizedBox(height: 8),
-        const Row(
-          children: [Text("Conversion fee"), Spacer(), Text("-0.70%")],
-        ),
         Row(
           children: [
-            const Text("Amount after conversion fees"),
+            Text(
+              "Conversion fee",
+              style: AppText.normalText,
+            ),
             const Spacer(),
-            Text("${usdToUsdConversionFee.toStringAsFixed(2)} USD"),
+            Text(
+              "$usdToUsdConversionFee USD",
+              style: AppText.normalText,
+            )
           ],
         ),
-        // const SizedBox(height: 8),
-        const Row(
-          children: [
-            Text("New customer rate"),
-            Spacer(),
-          ],
-        ),
+
         // const SizedBox(height: 8),
         Row(
           children: [
-            const Text(
+            Text(
               "Recipient gets",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.normalText,
             ),
             const Spacer(),
             Text(
               '$usdRecipientGets USD',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.normalText,
             ),
           ],
         ),

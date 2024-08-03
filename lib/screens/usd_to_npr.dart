@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/constants/app_text.dart';
 import 'package:wallet_xuno/widgets/button_container.dart';
 import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
@@ -116,7 +117,10 @@ class _UsdToNprState extends State<UsdToNpr> {
                 ],
               ),
               const SizedBox(height: 12),
-              const Text("Do you have a coupon code? "),
+              Text(
+                "Do you have a coupon code? ",
+                style: AppText.normalText,
+              ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,8 +197,8 @@ class _UsdToNprState extends State<UsdToNpr> {
                 textColor: Colors.black,
                 child: _calculateFee(),
               ),
-              const SizedBox(height: 10),
-              const CustomContainer(
+              const SizedBox(height: 8),
+              CustomContainer(
                 // height: 40,
                 width: 740,
                 borderColor: Colors.transparent,
@@ -203,13 +207,19 @@ class _UsdToNprState extends State<UsdToNpr> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Delivery time"),
-                    Spacer(),
-                    Text("4-5 business days")
+                    Text(
+                      "Delivery time",
+                      style: AppText.normalText,
+                    ),
+                    const Spacer(),
+                    Text(
+                      "4-5 business days",
+                      style: AppText.normalText,
+                    )
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               CustomContainer(
                 height: 58.h,
                 width: 740,
@@ -218,14 +228,14 @@ class _UsdToNprState extends State<UsdToNpr> {
                 textColor: Colors.black,
                 child: Row(
                   children: [
-                    const Text(
+                    Text(
                       "Total debit amount",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: AppText.boldText,
                     ),
                     const Spacer(),
                     Text(
                       "${sendUsdToNprController.text.isNotEmpty ? sendUsdToNprController.text : '0.0'} USD",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: AppText.boldText,
                     ),
                   ],
                 ),
@@ -251,16 +261,18 @@ class _UsdToNprState extends State<UsdToNpr> {
                       ),
                       const SizedBox(width: 8),
                       RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
                             TextSpan(
                               text: "You just saved ",
+                              style: AppText.normalText,
                             ),
                             TextSpan(
                               text: "1655 NPR",
                               style: TextStyle(
                                 color: Appcolour.green,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -268,7 +280,10 @@ class _UsdToNprState extends State<UsdToNpr> {
                         ),
                       ),
                       const Spacer(),
-                      const Text("Compare"),
+                      Text(
+                        "Compare",
+                        style: AppText.normalText,
+                      ),
                       IconButton(
                           onPressed: () {},
                           icon: const Icon(Icons.keyboard_arrow_down))
@@ -276,7 +291,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              // const SizedBox(height: 4),
               InkWell(
                 onTap: () {},
                 child: Container(
@@ -314,48 +329,50 @@ class _UsdToNprState extends State<UsdToNpr> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               "You Send",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.boldText,
             ),
             const Spacer(),
             Text(
               "${sendUsdToNprController.text.isNotEmpty ? sendUsdToNprController.text : '0.0'} USD",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: AppText.boldText,
             ),
           ],
         ),
         // const SizedBox(height: 8),
-        const Row(
-          children: [Text("Conversion fee"), Spacer(), Text("-0.70%")],
-        ),
         Row(
           children: [
-            const Text("Amount after conversion fees"),
-            const Spacer(),
-            Text("${afterUsdToNprConversion.toStringAsFixed(2)} USD"),
-          ],
-        ),
-        // const SizedBox(height: 8),
-        Row(
-          children: [
-            const Text("New customer rate"),
-            const Spacer(),
-            Text("x $rate"),
-          ],
-        ),
-        // const SizedBox(height: 8),
-        Row(
-          children: [
-            const Text(
-              "Recipient gets",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const Spacer(),
             Text(
-              '$nprRecipientGets NPR',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              "Conversion fee",
+              style: AppText.normalText,
             ),
+            const Spacer(),
+            Text("-0.70%", style: AppText.normalText)
+          ],
+        ),
+        Row(
+          children: [
+            Text("Amount after conversion fees", style: AppText.normalText),
+            const Spacer(),
+            Text("${afterUsdToNprConversion.toStringAsFixed(2)} USD",
+                style: AppText.normalText),
+          ],
+        ),
+        // const SizedBox(height: 8),
+        Row(
+          children: [
+            Text("New customer rate", style: AppText.normalText),
+            const Spacer(),
+            Text("x $rate", style: AppText.normalText),
+          ],
+        ),
+        // const SizedBox(height: 8),
+        Row(
+          children: [
+            Text("Recipient gets", style: AppText.boldText),
+            const Spacer(),
+            Text('$nprRecipientGets NPR', style: AppText.normalText),
           ],
         ),
       ],
