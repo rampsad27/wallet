@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wallet_xuno/screens/hoem.dart';
 import 'package:wallet_xuno/screens/new.dart';
+import 'package:wallet_xuno/screens/recipientScreen.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
 
 class AppRouter {
@@ -28,10 +29,12 @@ class AppRouter {
           GoRoute(
             path: '/',
             builder: (context, state) => const WalletScreen(),
-          ),
-          GoRoute(
-            path: '/settings',
-            builder: (context, state) => const HomeScreen(),
+            routes: [
+              GoRoute(
+                path: 'usd-to-npr',
+                builder: (context, state) => const Recipientscreen(),
+              ),
+            ],
           ),
         ],
       ),

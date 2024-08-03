@@ -9,4 +9,7 @@ class AppText {
   static TextStyle normalText = TextStyle(
     fontSize: 16.sp,
   );
+  static TextStyle smallnormalText = TextStyle(
+    fontSize: 14.sp,
+  );
 }

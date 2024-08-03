@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/constants/app_text.dart';
+import 'package:wallet_xuno/screens/recipientScreen.dart';
 import 'package:wallet_xuno/widgets/button_container.dart';
 import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
@@ -293,7 +295,12 @@ class _UsdToNprState extends State<UsdToNpr> {
               ),
               // const SizedBox(height: 4),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Recipientscreen()));
+                },
                 child: Container(
                   height: 40,
                   width: 740,
@@ -315,7 +322,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                     ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
