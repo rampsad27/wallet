@@ -7,16 +7,15 @@ import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
 class UsdToUsd extends StatefulWidget {
-  final TextEditingController sendController;
-  final double recipientGets;
-  final double afterConversion;
-  final double rate;
+  final TextEditingController sendUsdToUsdController;
+  final double usdRecipientGets;
+  final double usdToUsdConversionFee;
+
   const UsdToUsd({
     super.key,
-    required this.sendController,
-    required this.recipientGets,
-    required this.afterConversion,
-    required this.rate,
+    required this.sendUsdToUsdController,
+    required this.usdRecipientGets,
+    required this.usdToUsdConversionFee,
   });
 
   @override
@@ -24,36 +23,35 @@ class UsdToUsd extends StatefulWidget {
 }
 
 class _UsdToUsdState extends State<UsdToUsd> {
-  late TextEditingController sendController;
-  late double recipientGets;
-  late double afterConversion;
-  late double rate;
+  late TextEditingController sendUsdToUsdController;
+  late double usdRecipientGets;
+  late double usdToUsdConversionFee;
+
   @override
   void initState() {
     super.initState();
-    sendController = widget.sendController;
-    recipientGets = widget.recipientGets;
-    afterConversion = widget.afterConversion;
-    rate = widget.rate;
+    sendUsdToUsdController = widget.sendUsdToUsdController;
+    usdRecipientGets = widget.usdRecipientGets;
+    usdToUsdConversionFee = widget.usdToUsdConversionFee;
 
-    sendController.addListener(onSendAmountChanged);
+    sendUsdToUsdController.addListener(onSendAmountChanged);
   }
 
   @override
   void dispose() {
-    sendController.removeListener(onSendAmountChanged);
+    sendUsdToUsdController.removeListener(onSendAmountChanged);
     super.dispose();
   }
 
   void onSendAmountChanged() {
-    double sendValue = double.tryParse(sendController.text) ?? 0.0;
+    double sendValue = double.tryParse(sendUsdToUsdController.text) ?? 0.0;
     if (sendValue > 3000) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Amount should be less than 3000')),
       );
       return;
     }
-    context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
+    context.read<AmountBloc>().add(UpdateUsdToUsdSenderAmount(sendValue));
   }
 
   @override
@@ -62,11 +60,10 @@ class _UsdToUsdState extends State<UsdToUsd> {
       backgroundColor: Colors.transparent,
       body: BlocListener<AmountBloc, AmountState>(
           listener: (context, state) {
-            if (state is AmountUpdated) {
+            if (state is AmountUSDUpdated) {
               setState(() {
-                recipientGets = state.recipientGets;
-                afterConversion = state.afterConversion;
-                rate = state.rate; // Update rate if it changes
+                usdRecipientGets = state.usdRecipientGets;
+                usdToUsdConversionFee = state.usdToUsdConversionFee;
               });
             }
           },
@@ -74,7 +71,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
             const SizedBox(height: 8),
             MyInputTextField(
               title: "You Send",
-              controller: sendController,
+              controller: sendUsdToUsdController,
               inputType: const TextInputType.numberWithOptions(decimal: true),
               readOnly: false,
               suffixIcon: SizedBox(
@@ -119,7 +116,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
                   ),
                   const Spacer(),
                   Text(
-                    "${sendController.text.isNotEmpty ? sendController.text : '0.0'} USD",
+                    "${sendUsdToUsdController.text.isNotEmpty ? sendUsdToUsdController.text : '0.0'} USD",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -165,7 +162,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
             ),
             const Spacer(),
             Text(
-              "${sendController.text.isNotEmpty ? sendController.text : '0.0'} USD",
+              "${sendUsdToUsdController.text.isNotEmpty ? sendUsdToUsdController.text : '0.0'} USD",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
@@ -178,15 +175,14 @@ class _UsdToUsdState extends State<UsdToUsd> {
           children: [
             const Text("Amount after conversion fees"),
             const Spacer(),
-            Text("${afterConversion.toStringAsFixed(2)} USD"),
+            Text("${usdToUsdConversionFee.toStringAsFixed(2)} USD"),
           ],
         ),
         // const SizedBox(height: 8),
-        Row(
+        const Row(
           children: [
-            const Text("New customer rate"),
-            const Spacer(),
-            Text("x $rate"),
+            Text("New customer rate"),
+            Spacer(),
           ],
         ),
         // const SizedBox(height: 8),
@@ -198,7 +194,7 @@ class _UsdToUsdState extends State<UsdToUsd> {
             ),
             const Spacer(),
             Text(
-              '$recipientGets NPR',
+              '$usdRecipientGets USD',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],

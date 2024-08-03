@@ -13,26 +13,30 @@ class TabbedScreen extends StatefulWidget {
 }
 
 class _TabbedScreenState extends State<TabbedScreen> {
-  final TextEditingController sendController = TextEditingController();
-  double recipientGets = 0.0;
-  double afterConversion = 0.0;
+  final TextEditingController sendUsdToNprController = TextEditingController();
+  final TextEditingController sendUsdToUsdController = TextEditingController();
+  double nprRecipientGets = 0.0;
+  double usdRecipientGets = 0.0;
+  double afterUsdToNprConversion = 0.0;
   double rate = 133.64; // Set a default rate
+
+  double usdToUsdConversionFee = 0.0;
 
   @override
   void initState() {
     super.initState();
-    sendController.addListener(onSendAmountChanged);
+    sendUsdToNprController.addListener(onSendAmountChanged);
   }
 
   @override
   void dispose() {
-    sendController.removeListener(onSendAmountChanged);
-    sendController.dispose();
+    sendUsdToNprController.removeListener(onSendAmountChanged);
+    sendUsdToNprController.dispose();
     super.dispose();
   }
 
   void onSendAmountChanged() {
-    double sendValue = double.tryParse(sendController.text) ?? 0.0;
+    double sendValue = double.tryParse(sendUsdToNprController.text) ?? 0.0;
     if (sendValue > 3000) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Amount should be less than 3000')),
@@ -52,12 +56,13 @@ class _TabbedScreenState extends State<TabbedScreen> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             title: const TabBar(
+              indicatorSize: TabBarIndicatorSize.tab,
               indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(
                   width: 1,
                   color: Appcolour.green,
                 ),
-                insets: EdgeInsets.symmetric(horizontal: 180),
+                // insets: EdgeInsets.symmetric(horizontal: 182),
               ),
               labelStyle: TextStyle(
                 fontSize: 14, // Adjust size for selected tab
@@ -77,23 +82,22 @@ class _TabbedScreenState extends State<TabbedScreen> {
           body: Center(
             child: Container(
               width:
-                  580, //make tabbar body fit the screen as per the tabbar appbar
+                  560, //make tabbar body fit the screen as per the tabbar appbar
               color: Colors.transparent, // Make TabBarView transparent
               child: TabBarView(
                 children: [
                   // First Tab - USD to NPR
                   UsdToNpr(
-                    sendController: sendController,
-                    recipientGets: recipientGets,
-                    afterConversion: afterConversion,
+                    sendUsdToNprController: sendUsdToNprController,
+                    nprRecipientGets: nprRecipientGets,
+                    afterUsdToNprConversion: afterUsdToNprConversion,
                     rate: rate,
                   ),
                   // Second Tab - USD to USD
                   UsdToUsd(
-                    sendController: sendController,
-                    recipientGets: recipientGets,
-                    afterConversion: afterConversion,
-                    rate: rate,
+                    sendUsdToUsdController: sendUsdToUsdController,
+                    usdRecipientGets: usdRecipientGets,
+                    usdToUsdConversionFee: afterUsdToNprConversion,
                   ),
                 ],
               ),

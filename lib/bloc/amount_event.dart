@@ -15,3 +15,12 @@ class UpdateSenderAmount extends AmountEvent {
   @override
   List<Object> get props => [senderAmount];
 }
+
+class UpdateUsdToUsdSenderAmount extends AmountEvent {
+  final double senderUSDAmount;
+
+  const UpdateUsdToUsdSenderAmount(this.senderUSDAmount);
+
+  @override
+  List<Object> get props => [senderUSDAmount];
+}

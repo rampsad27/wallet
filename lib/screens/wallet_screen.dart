@@ -114,7 +114,7 @@ class _WalletScreenState extends State<WalletScreen> {
               padding: const EdgeInsets.all(44.0),
               child: SizedBox(
                 // color: const Color.fromARGB(255, 238, 219, 225),
-                height: 760.h,
+                height: 768.h,
                 width: 1780.w,
                 child: Row(
                   children: [

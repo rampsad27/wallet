@@ -10,6 +10,8 @@ class MyInputTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final TextEditingController? controller;
   final bool readOnly;
+  final double? height;
+  final double? width;
   // final String? Function(String?)? validator;
 
   const MyInputTextField({
@@ -20,6 +22,8 @@ class MyInputTextField extends StatefulWidget {
     this.suffixIcon,
     this.controller,
     required this.readOnly,
+    this.height,
+    this.width,
     // this.validator,
   });
 
@@ -53,8 +57,8 @@ class MyInputTextFieldState extends State<MyInputTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80.h,
-      width: 355.w,
+      height: widget.height ?? 80.h,
+      width: widget.width ?? 354.w,
       decoration: BoxDecoration(
         border: Border.all(color: _borderColor, width: _borderSize),
         borderRadius: BorderRadius.circular(8),

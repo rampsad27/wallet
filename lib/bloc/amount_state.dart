@@ -10,16 +10,33 @@ abstract class AmountState extends Equatable {
 class AmountInitial extends AmountState {}
 
 class AmountUpdated extends AmountState {
-  final double recipientGets;
-  final double afterConversion;
+  final double nprRecipientGets;
+  final double afterUsdToNprConversion;
   final double rate;
 
   const AmountUpdated(
-    this.recipientGets,
-    this.afterConversion,
+    this.nprRecipientGets,
+    this.afterUsdToNprConversion,
     this.rate,
   );
 
   @override
-  List<Object> get props => [recipientGets, rate, afterConversion];
+  List<Object> get props => [
+        nprRecipientGets,
+        rate,
+        afterUsdToNprConversion,
+      ];
+}
+
+class AmountUSDUpdated extends AmountState {
+  final double usdRecipientGets;
+  final double usdToUsdConversionFee;
+
+  const AmountUSDUpdated(
+    this.usdRecipientGets,
+    this.usdToUsdConversionFee,
+  );
+
+  @override
+  List<Object> get props => [usdRecipientGets, usdToUsdConversionFee];
 }
