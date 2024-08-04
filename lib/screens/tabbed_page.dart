@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/screens/usd_to_usd.dart';
@@ -48,59 +49,58 @@ class _TabbedScreenState extends State<TabbedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: DefaultTabController(
-        length: 2, // Number of tabs
-        child: Scaffold(
+    return DefaultTabController(
+      length: 2, // Number of tabs
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const TabBar(
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 1,
-                  color: Appcolour.green,
-                ),
-                // insets: EdgeInsets.symmetric(horizontal: 182),
+          title: const TabBar(
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                width: 1,
+                color: Appcolour.green,
               ),
-              labelStyle: TextStyle(
-                fontSize: 14, // Adjust size for selected tab
-                fontWeight: FontWeight.bold,
-                color: Appcolour.black,
-              ),
-              unselectedLabelStyle: TextStyle(
-                  fontSize: 12, // Adjust size for unselected tabs
-                  fontWeight: FontWeight.normal,
-                  color: Appcolour.black),
-              tabs: [
-                Tab(text: 'USD to NPR'),
-                Tab(text: 'USD to USD'),
-              ],
+              // insets: EdgeInsets.symmetric(horizontal: 182),
             ),
+            labelStyle: TextStyle(
+              fontSize: 14, // Adjust size for selected tab
+              fontWeight: FontWeight.bold,
+              color: Appcolour.black,
+            ),
+            unselectedLabelStyle: TextStyle(
+                fontSize: 12, // Adjust size for unselected tabs
+                fontWeight: FontWeight.normal,
+                color: Appcolour.black),
+            tabs: [
+              Tab(text: 'USD to NPR'),
+              Tab(text: 'USD to USD'),
+            ],
           ),
-          body: Center(
-            child: Container(
-              width:
-                  560, //make tabbar body fit the screen as per the tabbar appbar
-              color: Colors.transparent, // Make TabBarView transparent
-              child: TabBarView(
-                children: [
-                  // First Tab - USD to NPR
-                  UsdToNpr(
-                    sendUsdToNprController: sendUsdToNprController,
-                    nprRecipientGets: nprRecipientGets,
-                    afterUsdToNprConversion: afterUsdToNprConversion,
-                    rate: rate,
-                  ),
-                  // Second Tab - USD to USD
-                  UsdToUsd(
-                    sendUsdToUsdController: sendUsdToUsdController,
-                    usdRecipientGets: usdRecipientGets,
-                    usdToUsdConversionFee: afterUsdToNprConversion,
-                  ),
-                ],
-              ),
+        ),
+        body: Center(
+          child: Container(
+            width: 694
+                .w, //make tabbar body fit the screen as per the tabbar appbar
+            color: Colors.transparent, // Make TabBarView transparent
+            child: TabBarView(
+              children: [
+                // First Tab - USD to NPR
+                UsdToNpr(
+                  sendUsdToNprController: sendUsdToNprController,
+                  nprRecipientGets: nprRecipientGets,
+                  afterUsdToNprConversion: afterUsdToNprConversion,
+                  rate: rate,
+                ),
+                // Second Tab - USD to USD
+                UsdToUsd(
+                  sendUsdToUsdController: sendUsdToUsdController,
+                  usdRecipientGets: usdRecipientGets,
+                  usdToUsdConversionFee: afterUsdToNprConversion,
+                ),
+              ],
             ),
           ),
         ),

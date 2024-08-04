@@ -58,10 +58,10 @@ class MyInputTextFieldState extends State<MyInputTextField> {
   Widget build(BuildContext context) {
     return Container(
       height: widget.height ?? 80.h,
-      width: widget.width ?? 354.w,
+      width: widget.width ?? 340.w,
       decoration: BoxDecoration(
         border: Border.all(color: _borderColor, width: _borderSize),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceAround,

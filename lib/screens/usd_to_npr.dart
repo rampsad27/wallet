@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/constants/app_text.dart';
-import 'package:wallet_xuno/screens/recipientScreen.dart';
+import 'package:wallet_xuno/screens/blur_transition.dart';
+import 'package:wallet_xuno/screens/page_indicator.dart';
+import 'package:wallet_xuno/screens/payment_info.dart';
 import 'package:wallet_xuno/widgets/button_container.dart';
 import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
@@ -102,7 +104,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                     readOnly: false,
                     suffixIcon: SizedBox(
                         height: 40.h,
-                        width: 30.w,
+                        width: 30.w, //image
                         child: Image.asset('assets/images/usd.png')),
                   ),
                   const SizedBox(width: 8),
@@ -129,7 +131,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                 children: [
                   CustomButtonContainer(
                     height: 44.h,
-                    width: 172.w,
+                    width: 164.w,
                     text: "Instant",
                     isSelected: _selectedButton == "Instant",
                     onTap: () => _selectButton("Instant"),
@@ -137,7 +139,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                   ),
                   CustomButtonContainer(
                     height: 44.h,
-                    width: 172.w,
+                    width: 164.w,
                     text: "Same Day",
                     isSelected: _selectedButton == "Same Day",
                     onTap: () => _selectButton("Same Day"),
@@ -145,7 +147,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                   ),
                   CustomButtonContainer(
                     height: 44.h,
-                    width: 172.w,
+                    width: 164.w,
                     text: "Standard",
                     isSelected: _selectedButton == "Standard",
                     onTap: () => _selectButton("Standard"),
@@ -155,7 +157,7 @@ class _UsdToNprState extends State<UsdToNpr> {
                     children: [
                       CustomButtonContainer(
                         height: 44.h,
-                        width: 172.w,
+                        width: 164.w,
                         text: "Best Deal",
                         icon: SizedBox(
                             height: 24.h,
@@ -296,14 +298,19 @@ class _UsdToNprState extends State<UsdToNpr> {
               // const SizedBox(height: 4),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Recipientscreen()));
+                  context.go(
+                    '/home/pageindicator',
+                    // extra: {
+                    //   'sendUsdToNprController': sendUsdToNprController.text,
+                    //   'nprRecipientGets': nprRecipientGets,
+                    //   'afterUsdToNprConversion': afterUsdToNprConversion,
+                    //   'rate': rate,
+                    // }
+                  );
                 },
                 child: Container(
                   height: 40,
-                  width: 740,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.transparent,
@@ -371,7 +378,7 @@ class _UsdToNprState extends State<UsdToNpr> {
           children: [
             Text("New customer rate", style: AppText.normalText),
             const Spacer(),
-            Text("x $rate", style: AppText.normalText),
+            Text("x $rate NPR", style: AppText.normalText),
           ],
         ),
         // const SizedBox(height: 8),

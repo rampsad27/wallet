@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wallet_xuno/screens/emptyScreen.dart';
-import 'package:wallet_xuno/screens/recipientScreen.dart';
+import 'package:wallet_xuno/screens/page_indicator.dart';
 import 'package:wallet_xuno/screens/tabbed_page.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
 import 'package:wallet_xuno/screens/wrapper.dart';
@@ -37,8 +37,10 @@ final goRouter = GoRouter(
               routes: [
                 // child route
                 GoRoute(
-                  path: 'reciepient',
-                  builder: (context, state) => const Recipientscreen(),
+                  path: 'pageindicator',
+                  builder: (context, state) {
+                    return const PageIndicatorWidget();
+                  },
                 ),
               ],
             ),

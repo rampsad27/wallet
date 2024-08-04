@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 
 class AppText {
   static TextStyle boldText = TextStyle(
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w700,
     fontSize: 16.sp,
   );
-  static TextStyle normalText = TextStyle(
-    fontSize: 16.sp,
-  );
+  static TextStyle normalText =
+      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400);
   static TextStyle smallnormalText = TextStyle(
     fontSize: 14.sp,
   );
