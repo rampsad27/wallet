@@ -33,19 +33,6 @@ class _ScaffoldWithNavigationRailState
   final String searchIconNotfilled = 'assets/images/search.png';
   final String searchIconFilled = 'assets/images/search_filled.png';
 
-  void _toggleNotifIcon() {
-    setState(() {
-      notifIsIconPressed = !notifIsIconPressed;
-    });
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const NotificationDialog();
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -266,6 +253,62 @@ class _ScaffoldWithNavigationRailState
         ),
       ),
       label: const SizedBox.shrink(),
+    );
+  }
+
+  void _toggleNotifIcon() {
+    setState(() {
+      notifIsIconPressed = !notifIsIconPressed;
+    });
+
+    showMenu(
+      context: context,
+      position: const RelativeRect.fromLTRB(
+        0, //top
+        0,
+        0,
+        0,
+      ),
+      //  RelativeRect.fromLTRB(
+      //   MediaQuery.of(context).size.width - 50,
+      //   kToolbarHeight,
+      //   10,
+      //   20,
+      // ),
+
+      items: [
+        PopupMenuItem(
+          child: ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notification 1'),
+            onTap: () {
+              Navigator.of(context).pop(); // Close the menu
+              // Handle notification 1 tap
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notification 2'),
+            onTap: () {
+              Navigator.of(context).pop(); // Close the menu
+              // Handle notification 2 tap
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notification 3'),
+            onTap: () {
+              Navigator.of(context).pop(); // Close the menu
+              // Handle notification 3 tap
+            },
+          ),
+        ),
+      ],
+      elevation: 8.0,
     );
   }
 }

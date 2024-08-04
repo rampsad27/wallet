@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/bloc/amount_bloc.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/constants/app_text.dart';
+import 'package:wallet_xuno/screens/page_indicator.dart';
 import 'package:wallet_xuno/widgets/custom_container.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
@@ -135,7 +136,9 @@ class _UsdToUsdState extends State<UsdToUsd> {
             ),
             const SizedBox(height: 8),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                _navigateToPageIndicator(context, isUsdToNpr: false);
+              },
               child: Container(
                 height: 40,
                 width: 740,
@@ -159,6 +162,18 @@ class _UsdToUsdState extends State<UsdToUsd> {
               ),
             ),
           ])),
+    );
+  }
+
+  void _navigateToPageIndicator(BuildContext context,
+      {required bool isUsdToNpr}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PageIndicatorWidget(
+          initialPageIndex: 1, // Set the starting page index if needed
+          isUsdToNpr: isUsdToNpr,
+        ),
+      ),
     );
   }
 

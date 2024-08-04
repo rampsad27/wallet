@@ -4,18 +4,33 @@ import 'package:wallet_xuno/screens/complete.dart';
 import 'package:wallet_xuno/screens/confirmation.dart';
 import 'package:wallet_xuno/screens/dottedline.dart';
 import 'package:wallet_xuno/screens/payment_info.dart';
+import 'package:wallet_xuno/screens/usd_payment_info.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
 
 class PageIndicatorWidget extends StatefulWidget {
-  const PageIndicatorWidget({super.key});
+  final int initialPageIndex;
+  final bool isUsdToNpr;
+
+  const PageIndicatorWidget({
+    super.key,
+    this.initialPageIndex = 0,
+    this.isUsdToNpr = false,
+  });
 
   @override
   State<PageIndicatorWidget> createState() => _PageIndicatorWidgetState();
 }
 
 class _PageIndicatorWidgetState extends State<PageIndicatorWidget> {
-  final PageController _pageController = PageController(initialPage: 1);
-  int currentIndex = 1;
+  PageController _pageController = PageController();
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialPageIndex;
+    _pageController = PageController(initialPage: currentIndex);
+  }
 
   void _previousPage() {
     if (currentIndex > 0) {
@@ -46,11 +61,9 @@ class _PageIndicatorWidgetState extends State<PageIndicatorWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.transparent, // Make Scaffold background transparent
+      backgroundColor: Colors.transparent,
       body: Center(
         child: SizedBox(
-          // color: Colors.transparent, // Make container background transparent
           width: 694.w,
           child: Column(
             children: [
@@ -109,19 +122,25 @@ class _PageIndicatorWidgetState extends State<PageIndicatorWidget> {
                       currentIndex = page;
                     });
                   },
-                  children: [
-                    const WalletScreen(),
-                    Container(
-                      color: Colors
-                          .transparent, // Make page background transparent
-                      child: const PaymentInfo(
-                          // usdController: widget.usdController,
-                          // nprValue: widget.nprValue,
+                  children: widget.isUsdToNpr
+                      ? [
+                          const WalletScreen(),
+                          Container(
+                            color: Colors.transparent,
+                            child: const PaymentInfo(),
                           ),
-                    ),
-                    const Confirmation(),
-                    const Complete(),
-                  ],
+                          const Confirmation(),
+                          const Complete(),
+                        ]
+                      : [
+                          const WalletScreen(),
+                          Container(
+                            color: Colors.transparent,
+                            child: const UsdPaymentInfo(),
+                          ),
+                          const Confirmation(),
+                          const Complete(),
+                        ],
                 ),
               ),
             ],

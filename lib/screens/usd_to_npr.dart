@@ -298,13 +298,14 @@ class _UsdToNprState extends State<UsdToNpr> {
               // const SizedBox(height: 4),
               InkWell(
                 onTap: () {
-                  context.go(
-                    '/home/pageindicator',
-                    // extra: {
-                    //   'usdController': sendUsdToNprController,
-                    //   'nprValue': nprRecipientGets,
-                    // },
-                  );
+                  _navigateToPageIndicator(context, isUsdToNpr: true);
+                  // context.go(
+                  //   '/home/pageindicator',
+                  //   // extra: {
+                  //   //   'usdController': sendUsdToNprController,
+                  //   //   'nprValue': nprRecipientGets,
+                  //   // },
+                  // );
                 },
                 child: Container(
                   height: 40,
@@ -330,6 +331,18 @@ class _UsdToNprState extends State<UsdToNpr> {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToPageIndicator(BuildContext context,
+      {required bool isUsdToNpr}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PageIndicatorWidget(
+          initialPageIndex: 1, // Set the starting page index if needed
+          isUsdToNpr: isUsdToNpr,
         ),
       ),
     );
