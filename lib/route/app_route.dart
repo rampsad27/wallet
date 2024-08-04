@@ -39,7 +39,14 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'pageindicator',
                   builder: (context, state) {
-                    return const PageIndicatorWidget();
+                    // final extra = state.extra as Map<String, dynamic>;
+                    // final usdController =
+                    //     extra['usdController'] as TextEditingController;
+                    // final nprValue = extra['nprValue'] as double;
+
+                    return const PageIndicatorWidget(
+                        // usdController: usdController, nprValue: nprValue
+                        );
                   },
                 ),
               ],

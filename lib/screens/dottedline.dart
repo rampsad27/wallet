@@ -9,7 +9,7 @@ class DottedLine extends StatelessWidget {
   const DottedLine({
     super.key,
     this.width = double.infinity,
-    this.height = 1.0,
+    this.height = 2.0,
     this.lineWidth = 5.0,
     this.color = Colors.black,
   });

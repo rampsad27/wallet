@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_xuno/constants/app_colour.dart';
-import 'package:wallet_xuno/screens/payment_info.dart';
-import 'package:wallet_xuno/screens/confirmation.dart';
 import 'package:wallet_xuno/screens/complete.dart';
+import 'package:wallet_xuno/screens/confirmation.dart';
 import 'package:wallet_xuno/screens/dottedline.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_xuno/bloc/amount_bloc.dart';
+import 'package:wallet_xuno/screens/payment_info.dart';
+import 'package:wallet_xuno/screens/wallet_screen.dart';
 
 class PageIndicatorWidget extends StatefulWidget {
-  const PageIndicatorWidget({
-    super.key,
-  });
+  const PageIndicatorWidget({super.key});
 
   @override
   State<PageIndicatorWidget> createState() => _PageIndicatorWidgetState();
@@ -47,103 +43,99 @@ class _PageIndicatorWidgetState extends State<PageIndicatorWidget> {
     }
   }
 
-  void _navigateToPage(int index) {
-    if (index >= 0 && index < 4) {
-      setState(() {
-        currentIndex = index;
-        _pageController.animateToPage(
-          index,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(34, 0, 34, 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildPageIndicator(0),
-                  Expanded(
-                    child: DottedLine(
+      backgroundColor:
+          Colors.transparent, // Make Scaffold background transparent
+      body: Center(
+        child: SizedBox(
+          // color: Colors.transparent, // Make container background transparent
+          width: 694.w,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          color: currentIndex >= 0 ? Colors.green : Colors.grey,
+                          size: 12.0,
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: DottedLine(
+                        color: currentIndex >= 1 ? Colors.green : Colors.grey,
+                      ),
+                    ),
+                    Icon(
+                      Icons.circle,
                       color: currentIndex >= 1 ? Colors.green : Colors.grey,
+                      size: 12.0,
                     ),
-                  ),
-                  _buildPageIndicator(1),
-                  Expanded(
-                    child: DottedLine(
+                    Expanded(
+                      child: DottedLine(
+                        color: currentIndex >= 2 ? Colors.green : Colors.grey,
+                      ),
+                    ),
+                    Icon(
+                      Icons.circle,
                       color: currentIndex >= 2 ? Colors.green : Colors.grey,
+                      size: 12.0,
                     ),
-                  ),
-                  _buildPageIndicator(2),
-                  Expanded(
-                    child: DottedLine(
+                    Expanded(
+                      child: DottedLine(
+                        color: currentIndex >= 3 ? Colors.green : Colors.grey,
+                      ),
+                    ),
+                    Icon(
+                      Icons.circle,
                       color: currentIndex >= 3 ? Colors.green : Colors.grey,
+                      size: 12.0,
                     ),
-                  ),
-                  _buildPageIndicator(3),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (int page) {
-                setState(() {
-                  currentIndex = page;
-                });
-              },
-              children: const [
-                Complete(), // change later
-                PaymentInfo(),
-                Confirmation(),
-                Complete(),
-              ],
-            ),
-          ),
-          Container(
-            color: Appcolour.green,
-            height: 60,
-            child: InkWell(
-              onTap: _nextPage,
-              child: const Center(
-                child: Text(
-                  'Next',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  ],
                 ),
               ),
-            ),
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (int page) {
+                    setState(() {
+                      currentIndex = page;
+                    });
+                  },
+                  children: [
+                    const WalletScreen(),
+                    Container(
+                      color: Colors
+                          .transparent, // Make page background transparent
+                      child: const PaymentInfo(
+                          // usdController: widget.usdController,
+                          // nprValue: widget.nprValue,
+                          ),
+                    ),
+                    const Confirmation(),
+                    const Complete(),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 30,
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildPageIndicator(int index) {
-    return InkWell(
-      onTap: () => _navigateToPage(index),
-      child: Icon(
-        Icons.circle,
-        color: currentIndex >= index ? Colors.green : Colors.grey,
-        size: 12.0,
-      ),
+  Icon _getStepIcon(int index) {
+    return Icon(
+      currentIndex >= index ? Icons.circle : Icons.circle_outlined,
+      color: currentIndex >= index ? Colors.green : Colors.grey,
+      size: 42.0,
     );
   }
 }

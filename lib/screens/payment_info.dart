@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_xuno/bloc/amount_bloc.dart';
+import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/constants/app_text.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
 
 class PaymentInfo extends StatefulWidget {
-  // final TextEditingController sendUsdToNprController;
-  // final double nprRecipientGets;
-  // final double afterUsdToNprConversion;
-  // final double rate;
+  // final TextEditingController usdController;
+  // final double nprValue;
+
   const PaymentInfo({
     super.key,
-    // required this.sendUsdToNprController,
-    // required this.nprRecipientGets,
-    // required this.afterUsdToNprConversion,
-    // required this.rate
+    // required this.usdController,
+    // required this.nprValue,
   });
 
   @override
@@ -22,79 +19,119 @@ class PaymentInfo extends StatefulWidget {
 }
 
 class _PaymentInfoState extends State<PaymentInfo> {
-  // late TextEditingController sendUsdToNprController;
-  // late double nprRecipientGets;
-  // late double afterUsdToNprConversion;
-  // late double rate;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // sendUsdToNprController = widget.sendUsdToNprController;
-  //   // nprRecipientGets = widget.nprRecipientGets;
-  //   // afterUsdToNprConversion = widget.afterUsdToNprConversion;
-  //   // rate = widget.rate;
-
-  //   sendUsdToNprController.addListener(onSendAmountChanged);
-  // }
-
-  // @override
-  // void dispose() {
-  //   sendUsdToNprController.removeListener(onSendAmountChanged);
-  //   super.dispose();
-  // }
-
-  // void onSendAmountChanged() {
-  //   double sendValue = double.tryParse(sendUsdToNprController.text) ?? 0.0;
-  //   if (sendValue > 3000) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Amount should be less than 3000')),
-  //     );
-  //     return;
-  //   }
-  //   context.read<AmountBloc>().add(UpdateSenderAmount(sendValue));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AmountBloc, AmountState>(
-        listener: (context, state) {
-          // if (state is AmountUpdated) {
-          //   setState(() {
-          //     nprRecipientGets = state.nprRecipientGets;
-          //     afterUsdToNprConversion = state.afterUsdToNprConversion;
-          //     rate = state.rate; // Update rate if it changes
-          //   });
-          // }
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: const Color.fromARGB(0, 5, 128, 87),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyInputTextField(
-              title: "You Send",
-              // controller: sendUsdToNprController,
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              readOnly: false,
-              suffixIcon: SizedBox(
-                  height: 40.h,
-                  width: 30.w, //image
-                  child: Image.asset('assets/images/usd.png')),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: MyInputTextField(
+                    title: "You Send",
+                    // controller: widget.usdController,
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    readOnly: false,
+                    suffixIcon: SizedBox(
+                        height: 40.h,
+                        width: 30.w,
+                        child: Image.asset('assets/images/usd.png')),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: MyInputTextField(
+                    readOnly: true,
+                    title: "Recipient Gets",
+                    // value: widget.nprValue,
+                    inputType: TextInputType.number,
+                    suffixIcon: SizedBox(
+                        height: 40.h,
+                        width: 30.w,
+                        child: Image.asset('assets/images/nep.png')),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            MyInputTextField(
-              readOnly: true,
-              title: "Recipient Gets",
-              // value: nprRecipientGets,
-              inputType: TextInputType.number,
-              suffixIcon: SizedBox(
-                  height: 40.h,
-                  width: 30.w,
-                  child: Image.asset('assets/images/nep.png')),
+            SizedBox(height: 18.h),
+            Text("Bank Account*", style: AppText.hindTextNormal),
+            SizedBox(height: 8.h),
+            TextFormField(
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  hintText: "Enter Bank Name",
+                  hintStyle: AppText.hindlabelText),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text("Add another bank account",
+                  style: AppText.hindButtonText),
+            ),
+            SizedBox(height: 16.h),
+            Text("Select Recipient*", style: AppText.hindTextNormal),
+            SizedBox(height: 8.h),
+            TextFormField(
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: "Select your recipient",
+                  hintStyle: AppText.hindlabelText),
+            ),
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Text("Add personal recipient",
+                      style: AppText.hindButtonText),
+                ),
+                const Spacer(),
+                Text("Now you can", style: AppText.hindlabelgreyText),
+                TextButton(
+                  onPressed: () {},
+                  child: Text("add business recipient",
+                      style: AppText.hindButtonText),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Text("Reason For Sending Money ", style: AppText.hindTextNormal),
+            SizedBox(height: 8.h),
+            TextFormField(
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.orange),
+                  ),
+                  hintText: "Select reason for sendinng money",
+                  hintStyle: AppText.hindlabelText),
+            ),
+            SizedBox(height: 24.h),
+            Container(
+              decoration: BoxDecoration(
+                color: Appcolour.green,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              height: 56.h,
+              width: double.infinity,
+              child: InkWell(
+                onTap: () {},
+                child: Center(
+                  child: Text(
+                    'Transfer Money',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

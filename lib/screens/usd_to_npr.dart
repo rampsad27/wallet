@@ -301,11 +301,9 @@ class _UsdToNprState extends State<UsdToNpr> {
                   context.go(
                     '/home/pageindicator',
                     // extra: {
-                    //   'sendUsdToNprController': sendUsdToNprController.text,
-                    //   'nprRecipientGets': nprRecipientGets,
-                    //   'afterUsdToNprConversion': afterUsdToNprConversion,
-                    //   'rate': rate,
-                    // }
+                    //   'usdController': sendUsdToNprController,
+                    //   'nprValue': nprRecipientGets,
+                    // },
                   );
                 },
                 child: Container(
