@@ -12,4 +12,6 @@ class AppText {
   static TextStyle smallnormalText = TextStyle(
     fontSize: 14.sp,
   );
+  static TextStyle hindText =
+      TextStyle(fontSize: 16.sp, fontFamily: 'Hind', color: Colors.black);
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
+import 'package:wallet_xuno/constants/app_text.dart';
 import 'package:wallet_xuno/screens/notification_dialog.dart';
 
 class ScaffoldWithNavigationRail extends StatefulWidget {
@@ -22,7 +24,7 @@ class ScaffoldWithNavigationRail extends StatefulWidget {
 class _ScaffoldWithNavigationRailState
     extends State<ScaffoldWithNavigationRail> {
   bool notifIsIconPressed = false;
-  bool searchIsIconPressed = false;
+  // bool searchIsIconPressed = false;
 
   final String notifIconNotfilled = 'assets/images/notification.png';
   final String notifIconFilled = 'assets/images/notification_filled.png';
@@ -67,8 +69,6 @@ class _ScaffoldWithNavigationRailState
           const Spacer(),
           InkWell(
             onHover: (isHovered) {
-              // Handle hover state here if needed
-              // For example, you might want to change the icon when hovered
               setState(() {
                 notifIsIconPressed = !notifIsIconPressed;
               });
@@ -96,7 +96,7 @@ class _ScaffoldWithNavigationRailState
         children: [
           MediaQuery.removePadding(
             context: context,
-            removeLeft: true,
+            removeLeft: false,
             removeTop: true,
             removeRight: true,
             removeBottom: true,
@@ -104,35 +104,97 @@ class _ScaffoldWithNavigationRailState
               selectedIndex: widget.selectedIndex,
               extended: false,
               // leading: Image.network('https://picsum.photos/200'),
-              trailing: Expanded(
-                  child: Column(
+
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Spacer(),
-                  TextButton(onPressed: () {}, child: const Text('kk kk')),
+                  const Divider(
+                    thickness: 1,
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Review limit breakdown',
+                        style: AppText.hindText,
+                      )),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Contact us anytime for help',
+                        style: AppText.hindText,
+                      )),
                 ],
-              )),
+              ),
               minWidth: MediaQuery.of(context).size.width * 0.2,
               onDestinationSelected: widget.onDestinationSelected,
               labelType: NavigationRailLabelType.none,
               destinations: [
                 _buildNavRailItem(
                   'Home',
-                  Icons.home,
+                  const AssetImage(
+                      'assets/images/home.png'), // Changed to AssetImage
                   widget.selectedIndex == 0,
                   0,
                   context,
                 ),
                 _buildNavRailItem(
-                  'Settings',
-                  Icons.settings,
+                  'Account',
+                  const AssetImage(
+                      'assets/images/account.png'), // Changed to AssetImage
                   widget.selectedIndex == 1,
                   1,
+                  context,
+                ),
+                _buildNavRailItem(
+                  'Recipients',
+                  const AssetImage(
+                      'assets/images/recipients.png'), // Changed to AssetImage
+                  widget.selectedIndex == 2,
+                  2,
+                  context,
+                ),
+                _buildNavRailItem(
+                  'Transactions',
+                  const AssetImage(
+                      'assets/images/transaction.png'), // Changed to AssetImage
+                  widget.selectedIndex == 3,
+                  3,
+                  context,
+                ),
+                _buildNavRailItem(
+                  'Requests',
+                  const AssetImage(
+                      'assets/images/request.png'), // Changed to AssetImage
+                  widget.selectedIndex == 4,
+                  4,
+                  context,
+                ),
+                _buildNavRailItem(
+                  'Banks',
+                  const AssetImage(
+                      'assets/images/banks.png'), // Changed to AssetImage
+                  widget.selectedIndex == 5,
+                  5,
+                  context,
+                ),
+                _buildNavRailItem(
+                  'Vouchers',
+                  const AssetImage(
+                      'assets/images/voucher.png'), // Changed to AssetImage
+                  widget.selectedIndex == 6,
+                  6,
                   context,
                 ),
               ],
             ),
           ),
-          const VerticalDivider(thickness: 1, width: 1),
+          const VerticalDivider(
+            thickness: 1,
+            width: 1,
+            indent: 70,
+            endIndent: 104,
+          ),
           // Main content on the right (end)
           Expanded(
             child: widget.body,
@@ -142,31 +204,16 @@ class _ScaffoldWithNavigationRailState
     );
   }
 
-  /// Builds a [NavigationRailDestination] widget for the navigation rail.
-  ///
-  /// The [text] parameter represents the text to be displayed on the navigation
-  /// rail item.
-  ///
-  /// The [iconData] parameter represents the icon to be displayed on the
-  /// navigation rail item.
-  ///
-  /// The [isSelected] parameter indicates whether the navigation rail item is
-  /// currently selected.
-  ///
-  /// The [itemIndex] parameter represents the index of the navigation rail item.
-  ///
-  /// The [context] parameter represents the build context.
-  ///
-  /// Returns a [NavigationRailDestination] widget.
-  NavigationRailDestination _buildNavRailItem(String text, IconData iconData,
-      bool isSelected, int itemIndex, BuildContext context) {
+  NavigationRailDestination _buildNavRailItem(
+      String text,
+      ImageProvider imageData,
+      bool isSelected,
+      int itemIndex,
+      BuildContext context) {
     return NavigationRailDestination(
-      // padding: const EdgeInsets.symmetric(horizontal: 0),
-
       icon: InkWell(
-        hoverColor: Colors.amber,
         borderRadius: BorderRadius.circular(4),
-        splashColor: Colors.blue,
+        splashColor: Appcolour.backgroundContainer,
         onTap: () {
           widget.onDestinationSelected(itemIndex);
         },
@@ -174,14 +221,24 @@ class _ScaffoldWithNavigationRailState
           width: MediaQuery.of(context).size.width * 0.2,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: isSelected ? Colors.greenAccent : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+            color:
+                isSelected ? Appcolour.backgroundContainer : Colors.transparent,
           ),
           child: Row(
             children: [
-              Icon(iconData),
-              const SizedBox(width: 12),
-              Text(text),
+              Image(
+                image: imageData,
+                height: 16, // Adjust height as needed
+                width: 16, // Adjust width as needed
+              ),
+              const SizedBox(width: 8),
+              Text(text,
+                  style: GoogleFonts.hind(
+                    color: isSelected ? Appcolour.green : Appcolour.black,
+                    fontSize: isSelected ? 16 : 14,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                  )),
             ],
           ),
         ),

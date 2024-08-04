@@ -48,22 +48,25 @@ final goRouter = GoRouter(
         StatefulShellBranch(
           navigatorKey: _shellNavigatorBKey,
           routes: [
-            // top route inside branch
             GoRoute(
               path: '/account',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: WalletScreen(),
+                child: Emptyscreen(),
               ),
-              routes: const [
-                // child route
-                // GoRoute(
-                //   path: '21',
-                //   builder: (context, state) => const Emptyscreen(),
-                // ),
-              ],
             ),
           ],
         ),
+        // StatefulShellBranch(
+        //   navigatorKey: _shellNavigatorBKey,
+        //   routes: [
+        //     GoRoute(
+        //       path: '/recipients',
+        //       pageBuilder: (context, state) => const NoTransitionPage(
+        //         child: Emptyscreen(), // Updated to match routing
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     ),
   ],
