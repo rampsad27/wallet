@@ -8,5 +8,6 @@ class Appcolour {
   static const green = Color(0xFF0EA153);
   static const red = Colors.red;
   static const background = Color(0xFFF1FFF8);
-  static const backgroundContainer = Color(0xFFEEFBF2);
+  static const backgroundContainer = Color.fromARGB(255, 237, 245, 238);
+  static const textGreenSidebar = Color(0xFF087139);
 }
