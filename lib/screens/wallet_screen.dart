@@ -104,8 +104,8 @@ class _WalletScreenState extends State<WalletScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Appcolour.background, Appcolour.white],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
           ),
         ),
         child: Column(

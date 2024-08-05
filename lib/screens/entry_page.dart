@@ -87,8 +87,8 @@ class _ScaffoldWithNavigationRailState
               Appcolour.background,
               Appcolour.white,
             ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
           ),
         ),
         child: Padding(
