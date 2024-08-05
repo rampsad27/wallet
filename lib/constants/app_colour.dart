@@ -4,6 +4,7 @@ class Appcolour {
   static const primaryLogo = Color.fromARGB(255, 57, 113, 58);
   static const black = Colors.black;
   static const white = Colors.white;
+  static const grey = Colors.grey;
   static const border = Color.fromARGB(255, 196, 192, 192);
   static const green = Color(0xFF0EA153);
   static const red = Colors.red;

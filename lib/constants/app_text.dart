@@ -39,4 +39,9 @@ class AppText {
     fontWeight: FontWeight.w400,
     color: Colors.grey,
   );
+  static TextStyle notificationText = TextStyle(
+      fontSize: 28.sp,
+      fontFamily: 'Cabinet Grotesk',
+      color: Appcolour.green,
+      fontWeight: FontWeight.w700);
 }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wallet_xuno/screens/emptyScreen.dart';
+import 'package:wallet_xuno/screens/page.dart';
 import 'package:wallet_xuno/screens/page_indicator.dart';
 import 'package:wallet_xuno/screens/tabbed_page.dart';
 import 'package:wallet_xuno/screens/wallet_screen.dart';
@@ -10,6 +11,7 @@ import 'package:wallet_xuno/screens/wrapper.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
 final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
+// final _shellNavigatorCKey = GlobalKey<NavigatorState>(debugLabel: 'shellC');
 
 // the one and only GoRouter instance
 final goRouter = GoRouter(
@@ -60,7 +62,8 @@ final goRouter = GoRouter(
             GoRoute(
               path: '/account',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: Emptyscreen(),
+                child: ToggleableContainerScreen(),
+                // Emptyscreen(),
               ),
             ),
           ],
@@ -71,7 +74,7 @@ final goRouter = GoRouter(
         //     GoRoute(
         //       path: '/recipients',
         //       pageBuilder: (context, state) => const NoTransitionPage(
-        //         child: Emptyscreen(), // Updated to match routing
+        //         child: Emptyscreen(),
         //       ),
         //     ),
         //   ],

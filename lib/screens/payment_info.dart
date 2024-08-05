@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/constants/app_text.dart';
 import 'package:wallet_xuno/widgets/tabbar_textfield.dart';
+// import 'package:wallet_xuno/widgets/TextTextField.dart';
+import 'package:wallet_xuno/widgets/text_textfield.dart';
 
 class PaymentInfo extends StatefulWidget {
   // final TextEditingController usdController;
@@ -60,27 +62,19 @@ class _PaymentInfoState extends State<PaymentInfo> {
           SizedBox(height: 18.h),
           Text("Bank Account*", style: AppText.hindTextNormal),
           SizedBox(height: 8.h),
-          TextFormField(
-            decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                hintText: "Enter Bank Name",
-                hintStyle: AppText.hindlabelText),
+          const TextTextField(
+            hintText: 'Enter your bank name',
           ),
           TextButton(
             onPressed: () {},
             child:
                 Text("Add another bank account", style: AppText.hindButtonText),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 8.h),
           Text("Select Recipient*", style: AppText.hindTextNormal),
           SizedBox(height: 8.h),
-          TextFormField(
-            decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: "Select your recipient",
-                hintStyle: AppText.hindlabelText),
+          const TextTextField(
+            hintText: "Select your recipient",
           ),
           Row(
             children: [
@@ -98,16 +92,12 @@ class _PaymentInfoState extends State<PaymentInfo> {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 8.h),
           Text("Reason For Sending Money ", style: AppText.hindTextNormal),
           SizedBox(height: 8.h),
-          TextFormField(
-            decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.orange),
-                ),
-                hintText: "Select reason for sending money",
-                hintStyle: AppText.hindlabelText),
+          const TextTextField(
+            // border: Border.all(color: Appcolour.grey.grey),
+            hintText: "Select reason for sending money",
           ),
           SizedBox(height: 24.h),
           Container(

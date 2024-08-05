@@ -56,25 +56,41 @@ class _TabbedScreenState extends State<TabbedScreen> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
-          title: const TabBar(
+          title: TabBar(
             indicatorSize: TabBarIndicatorSize.tab,
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(
-                width: 1,
-                color: Appcolour.green,
-              ),
-              // insets: EdgeInsets.symmetric(horizontal: 182),
+            indicator: BoxDecoration(
+              border: const BorderDirectional(
+                  top: BorderSide(color: Appcolour.green, width: 1),
+                  bottom: BorderSide(
+                      color: Appcolour.green,
+                      style: BorderStyle.none,
+                      width: 1),
+                  start: BorderSide(color: Appcolour.green, width: 1),
+                  end: BorderSide(color: Appcolour.green, width: 1)),
+              //  Border.all(
+              //   color: Appcolour.green,
+              //   width: 1,
+              // ),
+              borderRadius: BorderRadius.circular(4),
+              color: Colors.transparent,
             ),
-            labelStyle: TextStyle(
+            // UnderlineTabIndicator(
+            //   borderSide: BorderSide(
+            //     width: 1,
+            //     color: Appcolour.green,
+            //   ),
+            //   // insets: EdgeInsets.symmetric(horizontal: 182),
+            // ),
+            labelStyle: const TextStyle(
               fontSize: 14, // Adjust size for selected tab
               fontWeight: FontWeight.bold,
               color: Appcolour.black,
             ),
-            unselectedLabelStyle: TextStyle(
+            unselectedLabelStyle: const TextStyle(
                 fontSize: 12, // Adjust size for unselected tabs
                 fontWeight: FontWeight.normal,
                 color: Appcolour.black),
-            tabs: [
+            tabs: const [
               Tab(text: 'USD to NPR'),
               Tab(text: 'USD to USD'),
             ],

@@ -154,28 +154,78 @@ class _UsdToNprState extends State<UsdToNpr> {
                     textColour: Appcolour.black,
                   ),
                   Stack(
+                    clipBehavior: Clip.none, // Allow overflow of children
                     children: [
-                      CustomButtonContainer(
-                        height: 44.h,
-                        width: 164.w,
-                        text: "Best Deal",
-                        icon: SizedBox(
-                            height: 24.h,
-                            child: Image.asset('assets/images/stars.png')),
-                        isSelected: _selectedButton == "Best Deal",
+                      GestureDetector(
                         onTap: () => _selectButton("Best Deal"),
-                        textColour: Appcolour.green,
+                        child: Container(
+                          height: 44.h,
+                          width: 164.w,
+                          decoration: BoxDecoration(
+                            color: _selectedButton == "Best Deal"
+                                ? Appcolour.green
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: _selectedButton == "Best Deal"
+                                  ? Appcolour.green
+                                  : Colors.grey,
+                            ),
+                          ),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 12.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                        height: 24.h,
+                                        child: Image.asset(
+                                            'assets/images/stars.png')),
+                                    SizedBox(width: 8.w),
+                                    Text(
+                                      "Best Deal",
+                                      style: TextStyle(
+                                        color: _selectedButton == "Best Deal"
+                                            ? Colors.white
+                                            : Appcolour.green,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                       Positioned(
-                        bottom: 20,
-                        right:
-                            20, // Adjust this to position the circle horizontally
+                        top: -8, // Adjust as needed
+                        left: 18.5, // Adjust as needed
                         child: Container(
-                          width: 10, // Adjust width
-                          height: 10, // Adjust height
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
+                          width: 122.w, // Adjust size as needed
+                          height: 20.h, // Adjust size as needed
+                          decoration: BoxDecoration(
+                            color: Appcolour.green,
+                            borderRadius: BorderRadius.circular(
+                                8), // Optional: rounded corners
+                            border: Border.all(
+                              color: Appcolour.green,
+                            ),
+                          ),
+
+                          child: Center(
+                            child: Text(
+                              "USD 1=NPR 133.34",
+                              style: TextStyle(
+                                color: Appcolour.white,
+                                fontSize: 10.sp,
+                              ),
+                            ),
                           ),
                         ),
                       ),

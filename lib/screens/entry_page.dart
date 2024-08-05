@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wallet_xuno/constants/app_colour.dart';
 import 'package:wallet_xuno/constants/app_text.dart';
-import 'package:wallet_xuno/screens/notification_dialog.dart';
 
 class ScaffoldWithNavigationRail extends StatefulWidget {
   const ScaffoldWithNavigationRail({
@@ -24,14 +23,12 @@ class ScaffoldWithNavigationRail extends StatefulWidget {
 
 class _ScaffoldWithNavigationRailState
     extends State<ScaffoldWithNavigationRail> {
+  bool _isContainerVisible = false;
+
   bool notifIsIconPressed = false;
-  // bool searchIsIconPressed = false;
 
   final String notifIconNotfilled = 'assets/images/notification.png';
   final String notifIconFilled = 'assets/images/notification_filled.png';
-
-  final String searchIconNotfilled = 'assets/images/search.png';
-  final String searchIconFilled = 'assets/images/search_filled.png';
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +53,7 @@ class _ScaffoldWithNavigationRailState
           ),
           const Spacer(),
           InkWell(
-            onHover: (isHovered) {
-              setState(() {
-                notifIsIconPressed = !notifIsIconPressed;
-              });
-            },
-            onTap: _toggleNotifIcon, // Call _toggleNotifIcon on tap
+            onTap: _toggleNotifIcon,
             child: Image.asset(
               notifIsIconPressed ? notifIconFilled : notifIconNotfilled,
               height: 28,
@@ -80,133 +72,253 @@ class _ScaffoldWithNavigationRailState
           const SizedBox(width: 32),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Appcolour.background,
-              Appcolour.white,
-            ],
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Appcolour.background,
+                  Appcolour.white,
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(56, 34, 0, 12),
+              child: Row(
+                children: [
+                  NavigationRail(
+                    selectedIndex: widget.selectedIndex,
+                    extended: false,
+                    backgroundColor: Colors.transparent,
+                    trailing: SizedBox(
+                      width: 300.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Divider(
+                            thickness: 1,
+                            color: Colors.grey.shade200,
+                          ),
+                          TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Review limit breakdown',
+                                style: AppText.hindText,
+                              )),
+                          TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Contact us anytime for help',
+                                style: AppText.hindText,
+                              )),
+                        ],
+                      ),
+                    ),
+                    minWidth: 300.w,
+                    onDestinationSelected: widget.onDestinationSelected,
+                    labelType: NavigationRailLabelType.none,
+                    destinations: [
+                      _buildNavRailItem(
+                        'Home',
+                        const AssetImage('assets/images/home.png'),
+                        widget.selectedIndex == 0,
+                        0,
+                        context,
+                      ),
+                      _buildNavRailItem(
+                        'Account',
+                        const AssetImage('assets/images/account.png'),
+                        widget.selectedIndex == 1,
+                        1,
+                        context,
+                      ),
+                      _buildNavRailItem(
+                        'Recipients',
+                        const AssetImage('assets/images/recipients.png'),
+                        widget.selectedIndex == 2,
+                        2,
+                        context,
+                      ),
+                      _buildNavRailItem(
+                        'Transactions',
+                        const AssetImage('assets/images/transaction.png'),
+                        widget.selectedIndex == 3,
+                        3,
+                        context,
+                      ),
+                      _buildNavRailItem(
+                        'Requests',
+                        const AssetImage('assets/images/request.png'),
+                        widget.selectedIndex == 4,
+                        4,
+                        context,
+                      ),
+                      _buildNavRailItem(
+                        'Banks',
+                        const AssetImage('assets/images/banks.png'),
+                        widget.selectedIndex == 5,
+                        5,
+                        context,
+                      ),
+                      _buildNavRailItem(
+                        'Vouchers',
+                        const AssetImage('assets/images/voucher.png'),
+                        widget.selectedIndex == 6,
+                        6,
+                        context,
+                      ),
+                    ],
+                  ),
+                  VerticalDivider(
+                    thickness: 1,
+                    width: 1,
+                    indent: 16,
+                    endIndent: 164,
+                    color: Colors.grey.shade200,
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 730.w,
+                    child: widget.body,
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(56, 34, 0, 12),
-          child: Row(
-            children: [
-              NavigationRail(
-                selectedIndex: widget.selectedIndex,
-                extended: false,
-                backgroundColor: Colors.transparent,
-
-                // leading: Image.network('https://picsum.photos/200'),
-
-                trailing: SizedBox(
-                  width: 300.w,
+          if (_isContainerVisible)
+            Positioned(
+              top: AppBar().preferredSize.height + 16.h, // Below the app bar
+              right: 54, // Align to the right side
+              width: 320.w, // Adjust width as needed
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Appcolour.background, Appcolour.white],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Divider(
-                        thickness: 1,
-                        color: Colors.grey.shade200,
+                      Text(
+                        'Notification',
+                        style: AppText.notificationText,
                       ),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Review limit breakdown',
-                            style: AppText.hindText,
+                      SizedBox(height: 10.h),
+                      Container(
+                          height: 130.h,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            color: Appcolour.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 3,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Title",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.")
+                              ],
+                            ),
                           )),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Contact us anytime for help',
-                            style: AppText.hindText,
+                      SizedBox(height: 20.h),
+                      Container(
+                          height: 130.h,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            color: Appcolour.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 3,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Title",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.")
+                              ],
+                            ),
                           )),
+                      SizedBox(height: 20.h),
+                      Container(
+                          height: 130.h,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            color: Appcolour.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 3,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Title",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.")
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ),
-                minWidth: 300.w,
-                onDestinationSelected: widget.onDestinationSelected,
-                labelType: NavigationRailLabelType.none,
-                destinations: [
-                  _buildNavRailItem(
-                    'Home',
-                    const AssetImage(
-                        'assets/images/home.png'), // Changed to AssetImage
-                    widget.selectedIndex == 0,
-                    0,
-                    context,
-                  ),
-                  _buildNavRailItem(
-                    'Account',
-                    const AssetImage(
-                        'assets/images/account.png'), // Changed to AssetImage
-                    widget.selectedIndex == 1,
-                    1,
-                    context,
-                  ),
-                  _buildNavRailItem(
-                    'Recipients',
-                    const AssetImage(
-                        'assets/images/recipients.png'), // Changed to AssetImage
-                    widget.selectedIndex == 2,
-                    2,
-                    context,
-                  ),
-                  _buildNavRailItem(
-                    'Transactions',
-                    const AssetImage(
-                        'assets/images/transaction.png'), // Changed to AssetImage
-                    widget.selectedIndex == 3,
-                    3,
-                    context,
-                  ),
-                  _buildNavRailItem(
-                    'Requests',
-                    const AssetImage(
-                        'assets/images/request.png'), // Changed to AssetImage
-                    widget.selectedIndex == 4,
-                    4,
-                    context,
-                  ),
-                  _buildNavRailItem(
-                    'Banks',
-                    const AssetImage(
-                        'assets/images/banks.png'), // Changed to AssetImage
-                    widget.selectedIndex == 5,
-                    5,
-                    context,
-                  ),
-                  _buildNavRailItem(
-                    'Vouchers',
-                    const AssetImage(
-                        'assets/images/voucher.png'), // Changed to AssetImage
-                    widget.selectedIndex == 6,
-                    6,
-                    context,
-                  ),
-                ],
               ),
-              VerticalDivider(
-                thickness: 1,
-                width: 1,
-                indent: 16,
-                endIndent: 164,
-                color: Colors.grey.shade200,
-              ),
-              const Spacer(),
-              // Main content on the right (end)
-              // ignore: sized_box_for_whitespace
-              Container(
-                // color: Colors.teal.shade100,
-                width: 730.w,
-                child: widget.body,
-              ),
-              const Spacer(),
-            ],
-          ),
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -259,56 +371,7 @@ class _ScaffoldWithNavigationRailState
   void _toggleNotifIcon() {
     setState(() {
       notifIsIconPressed = !notifIsIconPressed;
+      _isContainerVisible = !_isContainerVisible;
     });
-
-    showMenu(
-      context: context,
-      position: const RelativeRect.fromLTRB(
-        0, //top
-        0,
-        0,
-        0,
-      ),
-      //  RelativeRect.fromLTRB(
-      //   MediaQuery.of(context).size.width - 50,
-      //   kToolbarHeight,
-      //   10,
-      //   20,
-      // ),
-
-      items: [
-        PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notification 1'),
-            onTap: () {
-              Navigator.of(context).pop(); // Close the menu
-              // Handle notification 1 tap
-            },
-          ),
-        ),
-        PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notification 2'),
-            onTap: () {
-              Navigator.of(context).pop(); // Close the menu
-              // Handle notification 2 tap
-            },
-          ),
-        ),
-        PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notification 3'),
-            onTap: () {
-              Navigator.of(context).pop(); // Close the menu
-              // Handle notification 3 tap
-            },
-          ),
-        ),
-      ],
-      elevation: 8.0,
-    );
   }
 }
